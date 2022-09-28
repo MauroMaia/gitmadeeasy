@@ -7,7 +7,9 @@ import (
 	"log"
 )
 
-func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) {
+const BRANCH_LIST = "list_branches"
+
+func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	var branches = gitcmd.ListBranches()
 	var stringLen = 0
 	for _, branch := range branches {
@@ -20,14 +22,16 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) {
 	if len(branches) < maxY {
 		maxY = len(branches)
 	}
-	if v, err := g.SetView("list_branches", xBegins, yBegins, stringLen, maxY+1); err != nil {
-		if err != gocui.ErrUnknownView {
-			log.Fatalln(err)
-		}
 
-		for _, value := range branches {
-			var name = value.GetName()
-			_, _ = fmt.Fprintln(v, name)
-		}
+	v, err := g.SetView(BRANCH_LIST, xBegins, yBegins, stringLen+1, maxY+1)
+
+	if err != nil && err != gocui.ErrUnknownView {
+		log.Fatalln(err)
 	}
+
+	for _, value := range branches {
+		var name = value.GetName()
+		_, _ = fmt.Fprintln(v, name)
+	}
+	return v
 }

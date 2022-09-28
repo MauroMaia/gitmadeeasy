@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
 	"github.com/jroimartin/gocui"
 	"log"
@@ -27,8 +28,12 @@ func main() {
 }
 
 func layout(g *gocui.Gui) error {
-
+	gitcmd.ListCommitIDs()
 	ui.LayoutListBranches(g, 0, 0)
+
+	xBegins, _, _, yBegins, _ := g.ViewPosition(ui.BRANCH_LIST)
+
+	ui.LayoutListCommits(g, xBegins, yBegins)
 
 	return nil
 }
