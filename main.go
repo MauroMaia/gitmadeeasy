@@ -4,12 +4,25 @@ import (
 	"fmt"
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
+	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
 	"log"
 	"os"
 )
 
+// These values may be set by the build script via the LDFLAGS argument
+var (
+	commit      string
+	date        string
+	version     string
+	buildSource = "unknown"
+)
+
 func main() {
+	if !utils.IsGitRepoDirectory() {
+		log.Fatalln(os.Stderr, "Directory .git not found")
+	}
+
 	g, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		log.Panicln(err)
