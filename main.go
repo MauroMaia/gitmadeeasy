@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
-	"log"
-	"os"
 )
 
 // These values may be set by the build script via the LDFLAGS argument
@@ -19,8 +20,15 @@ var (
 )
 
 func main() {
+	log.Printf("##############\n")
+	log.Printf("# Version %s\n", version)
+	log.Printf("# Build Date %s\n", date)
+	log.Printf("# Commit Id %s\n", commit)
+	log.Printf("# Build Source %s\n", buildSource)
+	log.Printf("##############\n")
+
 	if !utils.IsGitRepoDirectory() {
-		log.Fatalln(os.Stderr, "Directory .git not found")
+		log.Fatalln("Directory .git not found")
 	}
 
 	g, err := gocui.NewGui(gocui.OutputNormal)
