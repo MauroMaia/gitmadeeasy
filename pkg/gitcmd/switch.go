@@ -11,7 +11,8 @@ import (
 func CreateNewBranch(name string) {
 	// TODO validate input
 	
-	// git switch <name> ??
+	// git switch <name> ?? vs checkout -b <name>
+	// TODO git push --set-upstream origin wip-create-menu
 	cmd := exec.Command("git", "switch", name)
 
 	var out bytes.Buffer
