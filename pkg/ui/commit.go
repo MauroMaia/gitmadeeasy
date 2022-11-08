@@ -28,5 +28,7 @@ func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 		_, _ = fmt.Fprintln(v, value)
 	}
 
+	v.Title = "Last Commits"
+
 	return v
 }

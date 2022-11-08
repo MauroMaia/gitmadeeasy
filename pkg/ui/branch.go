@@ -23,7 +23,7 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 		maxY = len(branches)
 	}
 
-	v, err := g.SetView(BRANCH_LIST, xBegins, yBegins, stringLen+1, maxY+1)
+	v, err := g.SetView(BRANCH_LIST, xBegins, yBegins, xBegins+stringLen+1, yBegins	+ maxY +1)
 
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
@@ -33,5 +33,8 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 		var name = value.GetName()
 		_, _ = fmt.Fprintln(v, name)
 	}
+
+	v.Title = "Branch list"
+	
 	return v
 }
