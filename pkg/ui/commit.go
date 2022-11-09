@@ -2,9 +2,10 @@ package ui
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/jroimartin/gocui"
-	"log"
 )
 
 const COMMIT_LIST = "COMMIT_LIST"
@@ -23,6 +24,8 @@ func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}
+
+	v.Clear()
 
 	for _, value := range commitsIds {
 		_, _ = fmt.Fprintln(v, value)

@@ -9,25 +9,29 @@ import (
 )
 
 const TOP_MENU = "top_menu"
-var buttons = [2]string{"New Branch","Commit"}
+var buttons = [3]string{
+	"New Branch",
+	"Committs",
+	"List Branchs",
+}
 
 func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int,yEnd int) *gocui.View {
 	var stringLen = 0
 	for _, str := range buttons {
 		if len(str) > stringLen {
-			stringLen += len(str)
+			stringLen = len(str)
 		}
 	}
 
 	v, err := g.SetView(TOP_MENU, xBegins, yBegins, stringLen+1, yEnd)
-
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}
 
+	v.Clear()
+
 	for _, value := range buttons {
-		var name = value
-		_, _ = fmt.Fprintln(v, name)
+		_, _ = fmt.Fprintln(v, value)
 	}
 
 	v.Title="Cmds"
@@ -37,10 +41,4 @@ func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int,yEnd int) *gocu
 	}
 	
 	return v
-}
-
-
-func buttonView(name string,v *gocui.View){
-	//stringLen := len(name)
-	//_, _ = fmt.Fprintln(v, name)
 }

@@ -24,10 +24,11 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	}
 
 	v, err := g.SetView(BRANCH_LIST, xBegins, yBegins, xBegins+stringLen+2, yBegins	+ maxY +1)
-
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}
+
+	v.Clear()
 
 	for _, value := range branches {
 		var name = value.GetName()
