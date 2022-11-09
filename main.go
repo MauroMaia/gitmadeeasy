@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
+	menu "github.com/MauroMaia/gitmadeeasy/pkg/ui/menu"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
 )
@@ -31,11 +31,15 @@ func main() {
 		log.Fatalln("Directory .git not found")
 	}
 
-	g, err := gocui.NewGui(gocui.OutputNormal)
+	g,err := gocui.NewGui(gocui.Output256)
 	if err != nil {
 		log.Panicln(err)
 	}
 	defer g.Close()
+
+	g.Highlight = true
+	g.Cursor = true
+	g.SelFgColor = gocui.ColorGreen
 
 	g.SetManagerFunc(layout)
 
@@ -49,11 +53,16 @@ func main() {
 }
 
 func layout(g *gocui.Gui) error {
-	gitcmd.ListCommitIDs()
-	ui.LayoutListBranches(g, 0, 0)
+	_,maxY := g.Size()
+
+	menu.LayoutTopMenuOptions(g, -1, 0, maxY-1)
+
+	_, _, xEnd, _, _ := g.ViewPosition(menu.TOP_MENU)
+	//xStart, yStart, xEnd, yEnd, _ := g.ViewPosition(menu.TOP_MENU)
+	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
+	ui.LayoutListBranches(g, xEnd+1, 0)
 
 	xBegins, _, _, yBegins, _ := g.ViewPosition(ui.BRANCH_LIST)
-
 	ui.LayoutListCommits(g, xBegins, yBegins)
 
 	return nil
