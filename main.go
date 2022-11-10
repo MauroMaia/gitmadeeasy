@@ -66,8 +66,10 @@ func layout(g *gocui.Gui) error {
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
 	ui.LayoutListBranches(g, xEnd+1, 0)
 
-	xBegins, _, _, yBegins, _ := g.ViewPosition(ui.BRANCH_LIST)
-	ui.LayoutListCommits(g, xBegins, yBegins)
+	_, _, xEnd, _, _  = g.ViewPosition(ui.BRANCH_LIST)
+	//xStart, yStart, xEnd, yEnd, _ := g.ViewPosition(ui.BRANCH_LIST)
+	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
+	ui.LayoutListCommits(g, xEnd+1, 0)
 
 	return nil
 }

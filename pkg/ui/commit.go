@@ -12,6 +12,8 @@ const COMMIT_LIST = "COMMIT_LIST"
 
 func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 
+	//log.Fatalf("xBegins %d yBegins%d \n",xBegins,yBegins)
+
 	var commitsIds = gitcmd.ListCommitIDs()
 	var stringLen = len(commitsIds[0])
 
@@ -19,8 +21,9 @@ func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	if len(commitsIds) < maxY {
 		maxY = len(commitsIds)
 	}
+	//log.Fatalf("maxX %d stringLen %d xBegins %d\n",maxX,stringLen,xBegins)
 
-	v, err := g.SetView(COMMIT_LIST, xBegins, yBegins, stringLen+1, yBegins+maxY+1)
+	v, err := g.SetView(COMMIT_LIST, xBegins, yBegins, xBegins+stringLen+2, maxY-1)
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}
