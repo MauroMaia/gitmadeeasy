@@ -62,7 +62,7 @@ func main() {
 func layout(g *gocui.Gui) error {
 	_, maxY := g.Size()
 
-	menu.LayoutTopMenuOptions(g, -1, 0, maxY-4)
+	menu.LayoutTopMenuOptions(g, -1, 0, maxY-3)
 
 	_, _, xEnd, _, _ := g.ViewPosition(constants.MENU_VIEW)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
@@ -72,7 +72,7 @@ func layout(g *gocui.Gui) error {
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
 	commit2.LayoutListCommits(g, xEnd+1, 0)
 
-	help.LayoutShowHelpView(g, 0, maxY-3)
+	help.LayoutShowHelpView(g, -1, maxY-2)
 
 	if _, err := utils.SetCurrentViewOnTop(g, constants.SELECTED_MENU); err != nil {
 		log.Fatalln(err)
