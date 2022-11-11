@@ -19,7 +19,7 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 
 	_, maxY := g.Size()
 
-	v, err := g.SetView(constants.BRANCH_LIST_VIEW, xBegins, yBegins, xBegins+stringLen+2, maxY-4)
+	v, err := g.SetView(constants.BRANCH_LIST_VIEW, xBegins, yBegins, xBegins+stringLen+2, maxY-3)
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}
