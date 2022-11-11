@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/help"
 	menu "github.com/MauroMaia/gitmadeeasy/pkg/ui/menu"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
@@ -31,7 +32,7 @@ func main() {
 		log.Fatalln("Directory .git not found")
 	}
 
-	g,err := gocui.NewGui(gocui.Output256)
+	g, err := gocui.NewGui(gocui.Output256)
 	if err != nil {
 		log.Panicln(err)
 	}
@@ -57,19 +58,21 @@ func main() {
 }
 
 func layout(g *gocui.Gui) error {
-	_,maxY := g.Size()
+	_, maxY := g.Size()
 
-	menu.LayoutTopMenuOptions(g, -1, 0, maxY-1)
+	menu.LayoutTopMenuOptions(g, -1, 0, maxY-4)
 
 	_, _, xEnd, _, _ := g.ViewPosition(menu.TOP_MENU)
 	//xStart, yStart, xEnd, yEnd, _ := g.ViewPosition(menu.TOP_MENU)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
 	ui.LayoutListBranches(g, xEnd+1, 0)
 
-	_, _, xEnd, _, _  = g.ViewPosition(ui.BRANCH_LIST)
+	_, _, xEnd, _, _ = g.ViewPosition(ui.BRANCH_LIST)
 	//xStart, yStart, xEnd, yEnd, _ := g.ViewPosition(ui.BRANCH_LIST)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
 	ui.LayoutListCommits(g, xEnd+1, 0)
+
+	help.LayoutShowHelpView(g, 0, maxY-3)
 
 	return nil
 }

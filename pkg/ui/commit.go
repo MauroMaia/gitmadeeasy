@@ -18,12 +18,9 @@ func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	var stringLen = len(commitsIds[0])
 
 	_, maxY := g.Size()
-	if len(commitsIds) < maxY {
-		maxY = len(commitsIds)
-	}
 	//log.Fatalf("maxX %d stringLen %d xBegins %d\n",maxX,stringLen,xBegins)
 
-	v, err := g.SetView(COMMIT_LIST, xBegins, yBegins, xBegins+stringLen+2, maxY-1)
+	v, err := g.SetView(COMMIT_LIST, xBegins, yBegins, xBegins+stringLen+2, maxY-4)
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}
