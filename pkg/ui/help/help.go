@@ -2,13 +2,12 @@ package help
 
 import (
 	"fmt"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/jroimartin/gocui"
 	"log"
 )
 
 const HELP_TEXT_MENU = "KeyArrow Down/UP Slect menu option | Enter select Option"
-
-const HELP_VIEW = "HELP_VIEW"
 
 func LayoutShowHelpView(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 
@@ -17,7 +16,7 @@ func LayoutShowHelpView(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	maxX, maxY := g.Size()
 	//log.Fatalf("maxX %d stringLen %d xBegins %d\n",maxX,stringLen,xBegins)
 
-	v, err := g.SetView(HELP_VIEW, xBegins, yBegins, maxX-1, maxY-1)
+	v, err := g.SetView(constants.HELP_VIEW, xBegins, yBegins, maxX-1, maxY-1)
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}

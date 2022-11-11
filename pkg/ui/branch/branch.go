@@ -1,13 +1,12 @@
-package ui
+package branch
 
 import (
 	"fmt"
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/jroimartin/gocui"
 	"log"
 )
-
-const BRANCH_LIST = "list_branches"
 
 func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	var branches = gitcmd.ListBranches()
@@ -20,7 +19,7 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 
 	_, maxY := g.Size()
 
-	v, err := g.SetView(BRANCH_LIST, xBegins, yBegins, xBegins+stringLen+2, maxY-4)
+	v, err := g.SetView(constants.BRANCH_LIST_VIEW, xBegins, yBegins, xBegins+stringLen+2, maxY-4)
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}

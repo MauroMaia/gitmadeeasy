@@ -2,13 +2,12 @@ package ui
 
 import (
 	"fmt"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
+	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"log"
 
-	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
 )
-
-const TOP_MENU = "top_menu"
 
 const B_NEW_BRANCH = "New Branch"
 const B_SHOW_COMMITS = "Commit's List"
@@ -28,7 +27,7 @@ func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *goc
 		}
 	}
 
-	v, err := g.SetView(TOP_MENU, xBegins, yBegins, stringLen+1, yEnd)
+	v, err := g.SetView(constants.MENU_VIEW, xBegins, yBegins, stringLen+1, yEnd)
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}
@@ -40,10 +39,7 @@ func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *goc
 	}
 
 	v.Title = "MENU"
-
-	if _, err = utils.SetCurrentViewOnTop(g, TOP_MENU); err != nil {
-		log.Fatalln(err)
-	}
+	v.Highlight = true
 
 	return v
 }
@@ -93,10 +89,16 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 		log.Fatal(l)
 		break
 	case B_SHOW_COMMITS:
-		log.Fatal(l)
+		if _, err = utils.SetCurrentViewOnTop(g, constants.COMMIT_LIST_VIEW); err != nil {
+			log.Fatalln(err)
+		}
+		constants.SELECTED_MENU = constants.COMMIT_LIST_VIEW
 		break
 	case B_SHOW_BRANCHS:
-		log.Fatal(l)
+		if _, err = utils.SetCurrentViewOnTop(g, constants.BRANCH_LIST_VIEW); err != nil {
+			log.Fatalln(err)
+		}
+		constants.SELECTED_MENU = constants.BRANCH_LIST_VIEW
 		break
 	default:
 		// not expected do nothing
@@ -108,13 +110,13 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 
 func Keybindings(g *gocui.Gui) error {
 
-	if err := g.SetKeybinding(TOP_MENU, gocui.KeyArrowDown, gocui.ModNone, MenuCursorDown); err != nil {
+	if err := g.SetKeybinding(constants.MENU_VIEW, gocui.KeyArrowDown, gocui.ModNone, MenuCursorDown); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding(TOP_MENU, gocui.KeyArrowUp, gocui.ModNone, MenuCursorUp); err != nil {
+	if err := g.SetKeybinding(constants.MENU_VIEW, gocui.KeyArrowUp, gocui.ModNone, MenuCursorUp); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding(TOP_MENU, gocui.KeyEnter, gocui.ModNone, getLine); err != nil {
+	if err := g.SetKeybinding(constants.MENU_VIEW, gocui.KeyEnter, gocui.ModNone, getLine); err != nil {
 		return err
 	}
 	return nil

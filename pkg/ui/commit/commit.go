@@ -1,14 +1,13 @@
-package ui
+package commit
 
 import (
 	"fmt"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"log"
 
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/jroimartin/gocui"
 )
-
-const COMMIT_LIST = "COMMIT_LIST"
 
 func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 
@@ -20,7 +19,7 @@ func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	_, maxY := g.Size()
 	//log.Fatalf("maxX %d stringLen %d xBegins %d\n",maxX,stringLen,xBegins)
 
-	v, err := g.SetView(COMMIT_LIST, xBegins, yBegins, xBegins+stringLen+2, maxY-4)
+	v, err := g.SetView(constants.COMMIT_LIST_VIEW, xBegins, yBegins, xBegins+stringLen+2, maxY-4)
 	if err != nil && err != gocui.ErrUnknownView {
 		log.Fatalln(err)
 	}

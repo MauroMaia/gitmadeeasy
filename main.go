@@ -5,7 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
+	commit2 "github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/help"
 	menu "github.com/MauroMaia/gitmadeeasy/pkg/ui/menu"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
@@ -62,22 +64,24 @@ func layout(g *gocui.Gui) error {
 
 	menu.LayoutTopMenuOptions(g, -1, 0, maxY-4)
 
-	_, _, xEnd, _, _ := g.ViewPosition(menu.TOP_MENU)
-	//xStart, yStart, xEnd, yEnd, _ := g.ViewPosition(menu.TOP_MENU)
+	_, _, xEnd, _, _ := g.ViewPosition(constants.MENU_VIEW)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
-	ui.LayoutListBranches(g, xEnd+1, 0)
+	branch.LayoutListBranches(g, xEnd+1, 0)
 
-	_, _, xEnd, _, _ = g.ViewPosition(ui.BRANCH_LIST)
-	//xStart, yStart, xEnd, yEnd, _ := g.ViewPosition(ui.BRANCH_LIST)
+	_, _, xEnd, _, _ = g.ViewPosition(constants.BRANCH_LIST_VIEW)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
-	ui.LayoutListCommits(g, xEnd+1, 0)
+	commit2.LayoutListCommits(g, xEnd+1, 0)
 
 	help.LayoutShowHelpView(g, 0, maxY-3)
+
+	if _, err := utils.SetCurrentViewOnTop(g, constants.SELECTED_MENU); err != nil {
+		log.Fatalln(err)
+	}
 
 	return nil
 }
 
 func quit(g *gocui.Gui, v *gocui.View) error {
-	fmt.Fprintln(os.Stdout, "quiting")
+	_, _ = fmt.Fprintln(os.Stdout, "quiting")
 	return gocui.ErrQuit
 }
