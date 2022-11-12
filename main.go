@@ -53,7 +53,12 @@ func main() {
 	if err := menu.Keybindings(g); err != nil {
 		log.Panicln(err)
 	}
-
+	if err := branch.Keybindings(g); err != nil {
+		log.Panicln(err)
+	}
+	if err := commit2.Keybindings(g); err != nil {
+		log.Panicln(err)
+	}
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
 		log.Panicln(err)
 	}
