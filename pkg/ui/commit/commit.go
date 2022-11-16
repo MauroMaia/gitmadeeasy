@@ -10,6 +10,7 @@ import (
 )
 
 var commitsIds []string
+var pos = 0
 
 func init() {
 	commitsIds = gitcmd.ListCommitIDs()
@@ -43,7 +44,7 @@ func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 func MenuCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
-		if cy+2 > len(commitsIds) {
+		if pos+2 > len(commitsIds) {
 			// reatch the bottom of the list
 			return nil
 		}
@@ -54,6 +55,7 @@ func MenuCursorDown(g *gocui.Gui, v *gocui.View) error {
 				return err
 			}
 		}
+		pos++
 	}
 	return nil
 }
@@ -67,6 +69,7 @@ func MenuCursorUp(g *gocui.Gui, v *gocui.View) error {
 				return err
 			}
 		}
+		pos--
 	}
 	return nil
 }
