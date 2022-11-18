@@ -3,7 +3,7 @@ package gitcmd
 import (
 	"bytes"
 	"github.com/MauroMaia/gitmadeeasy/pkg/model"
-	"log"
+	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -23,8 +23,8 @@ func ListBranches() []model.Branch {
 	err := cmd.Run()
 
 	if err != nil {
-		log.Println(out.String())
-		log.Fatal(err)
+		utils.Logger.Infoln(out.String())
+		utils.Logger.Fatalln(err)
 	}
 
 	var result []model.Branch

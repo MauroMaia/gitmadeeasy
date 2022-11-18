@@ -2,10 +2,9 @@ package ui
 
 import (
 	"fmt"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
-	"log"
-
 	"github.com/jroimartin/gocui"
 )
 
@@ -13,10 +12,12 @@ const B_NEW_BRANCH = "New Branch"
 const B_SHOW_COMMITS = "Commit's List"
 const B_SHOW_BRANCHS = "Branch's List"
 
-var buttons = [3]string{
+var buttons = [5]string{
 	B_NEW_BRANCH,
 	B_SHOW_COMMITS,
 	B_SHOW_BRANCHS,
+	"---",
+	"Settings",
 }
 
 func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *gocui.View {
@@ -29,7 +30,7 @@ func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *goc
 
 	v, err := g.SetView(constants.MENU_VIEW, xBegins, yBegins, stringLen+1, yEnd)
 	if err != nil && err != gocui.ErrUnknownView {
-		log.Fatalln(err)
+		utils.Logger.Fatalln(err)
 	}
 
 	v.Clear()
@@ -86,22 +87,22 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 
 	switch l {
 	case B_NEW_BRANCH:
-		log.Fatal(l)
+		commit.DisplayPopUp(g)
 		break
 	case B_SHOW_COMMITS:
 		if _, err = utils.SetCurrentViewOnTop(g, constants.COMMIT_LIST_VIEW); err != nil {
-			log.Fatalln(err)
+			utils.Logger.Fatalln(err)
 		}
 		constants.SELECTED_MENU = constants.COMMIT_LIST_VIEW
 		break
 	case B_SHOW_BRANCHS:
 		if _, err = utils.SetCurrentViewOnTop(g, constants.BRANCH_LIST_VIEW); err != nil {
-			log.Fatalln(err)
+			utils.Logger.Fatalln(err)
 		}
 		constants.SELECTED_MENU = constants.BRANCH_LIST_VIEW
 		break
 	default:
-		// not expected do nothing
+		// not expected to do anything
 		return nil
 	}
 

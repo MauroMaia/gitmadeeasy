@@ -1,30 +1,21 @@
 package gitcmd
 
 import (
-	"bytes"
+	"errors"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
-	"log"
-	"os/exec"
-	"strings"
 )
 
-func CreateNewBranch(name string) {
+func CreateNewBranch(name string, push bool) (bool, error) {
 	// TODO validate input
-	
+
 	// git switch <name> ?? vs checkout -b <name>
 	// TODO git push --set-upstream origin wip-create-menu
-	cmd := exec.Command("git", "switch", name)
+	result, exitCode, err := utils.ExecuteShellCmd("git", "checkout", "-b", name)
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-
-	err := cmd.Run()
-
-	if err != nil {
-		log.Println(out.String())
-		log.Fatal(err)
+	returnVal := err != nil && exitCode != 0
+	if returnVal {
+		return returnVal, errors.New(result[0])
 	}
-	//TODO - log outout
-	// var lines = utils.DeleteEmpty(strings.Split(out.String(), "\n"))
-	_ = utils.DeleteEmpty(strings.Split(out.String(), "\n"))
+	// TODO validate shell output
+	return returnVal, nil
 }

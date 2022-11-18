@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
@@ -23,20 +22,20 @@ var (
 )
 
 func main() {
-	log.Printf("##############\n")
-	log.Printf("# Version %s\n", version)
-	log.Printf("# Build Date %s\n", date)
-	log.Printf("# Commit Id %s\n", commit)
-	log.Printf("# Build Source %s\n", buildSource)
-	log.Printf("##############\n")
+	utils.Logger.Infoln("##############\n")
+	utils.Logger.Infof("# Version %s\n", version)
+	utils.Logger.Infof("# Build Date %s\n", date)
+	utils.Logger.Infof("# Commit Id %s\n", commit)
+	utils.Logger.Infof("# Build Source %s\n", buildSource)
+	utils.Logger.Infoln("##############\n")
 
 	if !utils.IsGitRepoDirectory() {
-		log.Fatalln("Directory .git not found")
+		utils.Logger.Fatalln("Directory .git not found")
 	}
 
 	g, err := gocui.NewGui(gocui.Output256)
 	if err != nil {
-		log.Panicln(err)
+		utils.Logger.Panicln(err)
 	}
 	defer g.Close()
 
@@ -47,20 +46,20 @@ func main() {
 	g.SetManagerFunc(layout)
 
 	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
-		log.Panicln(err)
+		utils.Logger.Panicln(err)
 	}
 
 	if err := menu.Keybindings(g); err != nil {
-		log.Panicln(err)
+		utils.Logger.Panicln(err)
 	}
 	if err := branch.Keybindings(g); err != nil {
-		log.Panicln(err)
+		utils.Logger.Panicln(err)
 	}
 	if err := commit2.Keybindings(g); err != nil {
-		log.Panicln(err)
+		utils.Logger.Panicln(err)
 	}
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
-		log.Panicln(err)
+		utils.Logger.Panicln(err)
 	}
 }
 
@@ -80,7 +79,7 @@ func layout(g *gocui.Gui) error {
 	help.LayoutShowHelpView(g, -1, maxY-2)
 
 	if _, err := utils.SetCurrentViewOnTop(g, constants.SELECTED_MENU); err != nil {
-		log.Fatalln(err)
+		utils.Logger.Fatalln(err)
 	}
 
 	return nil

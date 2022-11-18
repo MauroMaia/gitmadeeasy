@@ -5,14 +5,18 @@ import (
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/model"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
+	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
-	"log"
 )
 
 var branches []model.Branch
 var pos = 0
 
 func init() {
+	RefreshBranchList()
+}
+
+func RefreshBranchList() {
 	branches = gitcmd.ListBranches()
 }
 
@@ -29,7 +33,7 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 
 	v, err := g.SetView(constants.BRANCH_LIST_VIEW, xBegins, yBegins, xBegins+stringLen+2, maxY-3)
 	if err != nil && err != gocui.ErrUnknownView {
-		log.Fatalln(err)
+		utils.Logger.Fatalln(err)
 	}
 
 	v.Clear()

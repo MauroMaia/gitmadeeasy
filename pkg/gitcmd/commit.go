@@ -3,7 +3,6 @@ package gitcmd
 import (
 	"bytes"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
-	"log"
 	"os/exec"
 	"strings"
 )
@@ -17,8 +16,8 @@ func ListCommitIDs() []string {
 	err := cmd.Run()
 
 	if err != nil {
-		log.Println(out.String())
-		log.Fatal(err)
+		utils.Logger.Infoln(out.String())
+		utils.Logger.Fatalln(err)
 	}
 	var lines = utils.DeleteEmpty(strings.Split(out.String(), "\n"))
 	return lines
