@@ -45,29 +45,27 @@ func main() {
 
 	g.SetManagerFunc(layout)
 
-	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
-		utils.Logger.Panicln(err)
-	}
+	setKeybindings(g)
 
-	if err := menu.Keybindings(g); err != nil {
-		utils.Logger.Panicln(err)
-	}
-	if err := branch.Keybindings(g); err != nil {
-		utils.Logger.Panicln(err)
-	}
-	if err := commit2.Keybindings(g); err != nil {
-		utils.Logger.Panicln(err)
-	}
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
 		utils.Logger.Panicln(err)
 	}
 }
 
 func layout(g *gocui.Gui) error {
+	// get windows size
 	_, maxY := g.Size()
 
+	//
+	//	DEFAULT UI
+	//
 	menu.LayoutTopMenuOptions(g, -1, 0, maxY-3)
 
+	help.LayoutShowHelpView(g, -1, maxY-2)
+
+	//
+	// PANELS
+	//
 	_, _, xEnd, _, _ := g.ViewPosition(constants.MENU_VIEW)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
 	branch.LayoutListBranches(g, xEnd+1, 0)
@@ -75,8 +73,6 @@ func layout(g *gocui.Gui) error {
 	_, _, xEnd, _, _ = g.ViewPosition(constants.BRANCH_LIST_VIEW)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
 	commit2.LayoutListCommits(g, xEnd+1, 0)
-
-	help.LayoutShowHelpView(g, -1, maxY-2)
 
 	if _, err := utils.SetCurrentViewOnTop(g, constants.SELECTED_MENU); err != nil {
 		utils.Logger.Fatalln(err)
@@ -88,4 +84,27 @@ func layout(g *gocui.Gui) error {
 func quit(g *gocui.Gui, v *gocui.View) error {
 	_, _ = fmt.Fprintln(os.Stdout, "quiting")
 	return gocui.ErrQuit
+}
+
+func setKeybindings(g *gocui.Gui) {
+
+	//
+	//	Global Keybindings
+	//
+	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
+		utils.Logger.Panicln(err)
+	}
+
+	//
+	// Panel specific Keybindings
+	//
+	if err := menu.Keybindings(g); err != nil {
+		utils.Logger.Panicln(err)
+	}
+	if err := branch.Keybindings(g); err != nil {
+		utils.Logger.Panicln(err)
+	}
+	if err := commit2.Keybindings(g); err != nil {
+		utils.Logger.Panicln(err)
+	}
 }
