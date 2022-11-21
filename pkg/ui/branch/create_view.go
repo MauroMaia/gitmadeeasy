@@ -57,7 +57,7 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func Popoff(g *gocui.Gui, v *gocui.View) error {
+func quitPopup(g *gocui.Gui, v *gocui.View) error {
 
 	g.DeleteView(constants.NEW_COMMIT_POPUP)
 	constants.SELECTED_MENU = constants.MENU_VIEW

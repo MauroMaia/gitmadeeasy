@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	status "github.com/MauroMaia/gitmadeeasy/pkg/ui/status"
 	"os"
 
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
@@ -22,12 +23,12 @@ var (
 )
 
 func main() {
-	utils.Logger.Infoln("##############\n")
+	utils.Logger.Infoln("##############")
 	utils.Logger.Infof("# Version %s\n", version)
 	utils.Logger.Infof("# Build Date %s\n", date)
 	utils.Logger.Infof("# Commit Id %s\n", commit)
 	utils.Logger.Infof("# Build Source %s\n", buildSource)
-	utils.Logger.Infoln("##############\n")
+	utils.Logger.Infoln("##############")
 
 	if !utils.IsGitRepoDirectory() {
 		utils.Logger.Fatalln("Directory .git not found")
@@ -73,6 +74,10 @@ func layout(g *gocui.Gui) error {
 	_, _, xEnd, _, _ = g.ViewPosition(constants.BRANCH_LIST_VIEW)
 	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
 	commit2.LayoutListCommits(g, xEnd+1, 0)
+
+	_, _, xEnd, _, _ = g.ViewPosition(constants.COMMIT_LIST_VIEW)
+	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
+	status.LayoutShowStatus(g, xEnd+1, 0)
 
 	if _, err := utils.SetCurrentViewOnTop(g, constants.SELECTED_MENU); err != nil {
 		utils.Logger.Fatalln(err)

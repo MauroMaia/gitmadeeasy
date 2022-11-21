@@ -6,6 +6,9 @@ import (
 )
 
 func CreateNewBranch(name string, push bool) (bool, error) {
+
+	utils.Logger.Tracef("CreateNewBranch")
+
 	// TODO validate input
 
 	// git switch <name> ?? vs checkout -b <name>

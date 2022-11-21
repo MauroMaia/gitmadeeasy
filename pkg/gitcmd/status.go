@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-func ListCommitIDs() []string {
-
-	utils.Logger.Tracef("ListCommitIDs")
-
-	cmd := exec.Command("git", "log", "--pretty=%h - %cn - %s")
+func ListFilesChanged() []string {
+	// git branch --no-color --list --all
+	utils.Logger.Tracef("ListFilesChanged")
+	cmd := exec.Command("git", "status", "-s")
 
 	var out bytes.Buffer
 	cmd.Stdout = &out
+	cmd.Stderr = &out
 
 	err := cmd.Run()
 
@@ -22,6 +22,8 @@ func ListCommitIDs() []string {
 		utils.Logger.Infoln(out.String())
 		utils.Logger.Fatalln(err)
 	}
-	var lines = utils.DeleteEmpty(strings.Split(out.String(), "\n"))
+
+	var lines = strings.Split(out.String(), "\n")
+
 	return lines
 }
