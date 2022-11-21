@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func TestListCommitIDs(t *testing.T) {
 
 	tests := []struct {
@@ -13,16 +12,16 @@ func TestListCommitIDs(t *testing.T) {
 		want    bool
 		wantErr bool
 	}{
-		{"Success test case",true, false},
+		{"Success test case", true, false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
 			got := ListCommitIDs()
-			
+
 			vaultJsonBytes, err := json.Marshal(got)
 			if err != nil {
-				t.Fatal(err)
+				t.Fatalf("Failed to parse json: %s \n", err)
 			}
 
 			t.Logf("Got: %s\n", string(vaultJsonBytes))
