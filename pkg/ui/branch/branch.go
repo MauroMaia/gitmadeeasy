@@ -48,7 +48,7 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	return v
 }
 
-func MenuCursorDown(g *gocui.Gui, v *gocui.View) error {
+func listCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
 		if pos+2 > len(branches) {
@@ -67,7 +67,7 @@ func MenuCursorDown(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func MenuCursorUp(g *gocui.Gui, v *gocui.View) error {
+func listCursorUp(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		ox, oy := v.Origin()
 		cx, cy := v.Cursor()
@@ -77,17 +77,6 @@ func MenuCursorUp(g *gocui.Gui, v *gocui.View) error {
 			}
 		}
 		pos--
-	}
-	return nil
-}
-
-func Keybindings(g *gocui.Gui) error {
-
-	if err := g.SetKeybinding(constants.BRANCH_LIST_VIEW, gocui.KeyArrowDown, gocui.ModNone, MenuCursorDown); err != nil {
-		return err
-	}
-	if err := g.SetKeybinding(constants.BRANCH_LIST_VIEW, gocui.KeyArrowUp, gocui.ModNone, MenuCursorUp); err != nil {
-		return err
 	}
 	return nil
 }

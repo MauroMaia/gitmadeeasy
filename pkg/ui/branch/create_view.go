@@ -1,9 +1,8 @@
-package commit
+package branch
 
 import (
 	"fmt"
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
-	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
@@ -49,7 +48,7 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 			_, _ = fmt.Fprintln(v, err.Error())
 			v.SetCursor(0, 46)
 		} else {
-			branch.RefreshBranchList()
+			RefreshBranchList()
 			g.DeleteView(constants.NEW_COMMIT_POPUP)
 			constants.SELECTED_MENU = constants.BRANCH_LIST_VIEW
 		}

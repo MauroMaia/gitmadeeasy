@@ -2,7 +2,7 @@ package ui
 
 import (
 	"fmt"
-	"github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
@@ -87,7 +87,7 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 
 	switch l {
 	case B_NEW_BRANCH:
-		commit.DisplayPopUp(g)
+		branch.DisplayPopUp(g)
 		break
 	case B_SHOW_COMMITS:
 		if _, err = utils.SetCurrentViewOnTop(g, constants.COMMIT_LIST_VIEW); err != nil {
