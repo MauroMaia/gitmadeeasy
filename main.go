@@ -72,8 +72,10 @@ func layout(g *gocui.Gui) error {
 
 	ui.DrawLeftView(g, xEnd, painelXsize, constants.LEFT_VIEW)
 
-	_, _, xEnd, _, _ = g.ViewPosition(constants.LEFT_VIEW)
-	ui.DrawRightView(g, xEnd, painelXsize, constants.RIGTH_VIEW)
+	if constants.RIGTH_VIEW != "" {
+		_, _, xEnd, _, _ = g.ViewPosition(constants.LEFT_VIEW)
+		ui.DrawRightView(g, xEnd, painelXsize, constants.RIGTH_VIEW)
+	}
 
 	if _, err := utils.SetCurrentViewOnTop(g, constants.HIGHLIGTH_VIEW); err != nil {
 		utils.Logger.Fatalln(err)
