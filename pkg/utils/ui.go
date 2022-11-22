@@ -14,7 +14,6 @@ func SetCurrentViewOnTop(g *gocui.Gui, name string) (*gocui.View, error) {
 
 func QuitToMenu(g *gocui.Gui, v *gocui.View) error {
 
-	constants.SELECTED_MENU = constants.MENU_VIEW
-
+	constants.HIGHLIGTH_VIEW = constants.MENU_VIEW
 	return nil
 }

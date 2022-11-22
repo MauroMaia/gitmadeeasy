@@ -15,11 +15,11 @@ func init() {
 	commitsIds = gitcmd.ListFilesChanged()
 }
 
-func LayoutShowStatus(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
+func LayoutShowStatus(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
 
-	maxX, maxY := g.Size()
+	_, maxY := g.Size()
 
-	v, err := g.SetView(constants.FILE_CHANGED_VIEW, xBegins, yBegins, maxX-1, maxY-3)
+	v, err := g.SetView(constants.FILE_CHANGED_VIEW, xBegins, yBegins, xEnd, maxY-3)
 	if err != nil && err != gocui.ErrUnknownView {
 		utils.Logger.Fatalln(err)
 	}

@@ -20,13 +20,13 @@ func Keybindings(g *gocui.Gui) error {
 	}
 
 	// pop ui to create new branch
-	if err := g.SetKeybinding(constants.NEW_COMMIT_POPUP, gocui.KeyCtrlSpace, gocui.ModNone, quitPopup); err != nil {
+	if err := g.SetKeybinding(constants.NEW_BRANCH_POPUP, gocui.KeyCtrlSpace, gocui.ModNone, quitPopup); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding(constants.NEW_COMMIT_POPUP, gocui.KeyEnter, gocui.ModNone, onEnterPress); err != nil {
+	if err := g.SetKeybinding(constants.NEW_BRANCH_POPUP, gocui.KeyEnter, gocui.ModNone, onEnterPress); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding(constants.NEW_COMMIT_POPUP, gocui.KeySpace, gocui.ModNone, ignoreKey); err != nil {
+	if err := g.SetKeybinding(constants.NEW_BRANCH_POPUP, gocui.KeySpace, gocui.ModNone, ignoreKey); err != nil {
 		return err
 	}
 

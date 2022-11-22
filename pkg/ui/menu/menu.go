@@ -9,15 +9,19 @@ import (
 )
 
 const B_NEW_BRANCH = "New Branch"
-const B_SHOW_COMMITS = "Commit's List"
+const B_SHOW_COMMITS = "Commits List"
 const B_SHOW_BRANCHS = "Branch's List"
+const B_COMMIT_CHANGES = "Commit changes"
+const B_SETTINGS = "Settings"
 
-var buttons = [5]string{
+var buttons = [7]string{
 	B_NEW_BRANCH,
-	B_SHOW_COMMITS,
 	B_SHOW_BRANCHS,
 	"---",
-	"Settings",
+	B_SHOW_COMMITS,
+	B_COMMIT_CHANGES,
+	"---",
+	B_SETTINGS,
 }
 
 func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *gocui.View {
@@ -88,18 +92,18 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 	switch l {
 	case B_NEW_BRANCH:
 		branch.DisplayPopUp(g)
+		constants.HIGHLIGTH_VIEW = constants.NEW_BRANCH_POPUP
 		break
 	case B_SHOW_COMMITS:
 		if _, err = utils.SetCurrentViewOnTop(g, constants.COMMIT_LIST_VIEW); err != nil {
 			utils.Logger.Fatalln(err)
 		}
-		constants.SELECTED_MENU = constants.COMMIT_LIST_VIEW
+		constants.HIGHLIGTH_VIEW = constants.COMMIT_LIST_VIEW
 		break
 	case B_SHOW_BRANCHS:
-		if _, err = utils.SetCurrentViewOnTop(g, constants.BRANCH_LIST_VIEW); err != nil {
-			utils.Logger.Fatalln(err)
-		}
-		constants.SELECTED_MENU = constants.BRANCH_LIST_VIEW
+		g.DeleteView(constants.LEFT_VIEW)
+		constants.LEFT_VIEW = constants.BRANCH_LIST_VIEW
+		constants.HIGHLIGTH_VIEW = constants.BRANCH_LIST_VIEW
 		break
 	default:
 		// not expected to do anything

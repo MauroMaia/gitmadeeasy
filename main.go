@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	status "github.com/MauroMaia/gitmadeeasy/pkg/ui/status"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/help"
 	"os"
 
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
-	commit2 "github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
-	"github.com/MauroMaia/gitmadeeasy/pkg/ui/help"
 	menu "github.com/MauroMaia/gitmadeeasy/pkg/ui/menu"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
@@ -16,7 +16,7 @@ import (
 
 // These values may be set by the build script via the LDFLAGS argument
 var (
-	commit      string
+	commitHash  string
 	date        string
 	version     string
 	buildSource = "unknown"
@@ -26,7 +26,7 @@ func main() {
 	utils.Logger.Infoln("##############")
 	utils.Logger.Infof("# Version %s\n", version)
 	utils.Logger.Infof("# Build Date %s\n", date)
-	utils.Logger.Infof("# Commit Id %s\n", commit)
+	utils.Logger.Infof("# Commit Id %s\n", commitHash)
 	utils.Logger.Infof("# Build Source %s\n", buildSource)
 	utils.Logger.Infoln("##############")
 
@@ -55,31 +55,27 @@ func main() {
 
 func layout(g *gocui.Gui) error {
 	// get windows size
-	_, maxY := g.Size()
+	maxX, maxY := g.Size()
 
 	//
 	//	DEFAULT UI
 	//
+	help.LayoutShowHelpView(g, -1, maxY-2)
 	menu.LayoutTopMenuOptions(g, -1, 0, maxY-3)
 
-	help.LayoutShowHelpView(g, -1, maxY-2)
+	_, _, xEnd, _, _ := g.ViewPosition(constants.MENU_VIEW)
+	painelXsize := (maxX - xEnd) / 2
 
 	//
 	// PANELS
 	//
-	_, _, xEnd, _, _ := g.ViewPosition(constants.MENU_VIEW)
-	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
-	branch.LayoutListBranches(g, xEnd+1, 0)
 
-	_, _, xEnd, _, _ = g.ViewPosition(constants.BRANCH_LIST_VIEW)
-	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
-	commit2.LayoutListCommits(g, xEnd+1, 0)
+	ui.DrawLeftView(g, xEnd, painelXsize, constants.LEFT_VIEW)
 
-	_, _, xEnd, _, _ = g.ViewPosition(constants.COMMIT_LIST_VIEW)
-	//log.Printf("xStart %d xEnd %d yStart %d yEnd %d", xStart,xEnd,yStart,yEnd)
-	status.LayoutShowStatus(g, xEnd+1, 0)
+	_, _, xEnd, _, _ = g.ViewPosition(constants.LEFT_VIEW)
+	ui.DrawRightView(g, xEnd, painelXsize, constants.RIGTH_VIEW)
 
-	if _, err := utils.SetCurrentViewOnTop(g, constants.SELECTED_MENU); err != nil {
+	if _, err := utils.SetCurrentViewOnTop(g, constants.HIGHLIGTH_VIEW); err != nil {
 		utils.Logger.Fatalln(err)
 	}
 
@@ -109,7 +105,7 @@ func setKeybindings(g *gocui.Gui) {
 	if err := branch.Keybindings(g); err != nil {
 		utils.Logger.Panicln(err)
 	}
-	if err := commit2.Keybindings(g); err != nil {
+	if err := commit.Keybindings(g); err != nil {
 		utils.Logger.Panicln(err)
 	}
 }

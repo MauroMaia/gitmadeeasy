@@ -15,13 +15,11 @@ func init() {
 	commitsIds = gitcmd.ListCommitIDs()
 }
 
-func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
-
-	var stringLen = len(commitsIds[0])
+func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
 
 	_, maxY := g.Size()
 
-	v, err := g.SetView(constants.COMMIT_LIST_VIEW, xBegins, yBegins, xBegins+stringLen+2, maxY-3)
+	v, err := g.SetView(constants.COMMIT_LIST_VIEW, xBegins, yBegins, xEnd, maxY-3)
 	if err != nil && err != gocui.ErrUnknownView {
 		utils.Logger.Fatalln(err)
 	}
@@ -33,6 +31,8 @@ func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	}
 
 	v.Title = "Last Commits"
+	// TODO - create an option in Settings
+	v.Wrap = true
 
 	return v
 }
@@ -41,7 +41,7 @@ func MenuCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
 		if pos+2 > len(commitsIds) {
-			// reatch the bottom of the list
+			// reach the bottom of the list
 			return nil
 		}
 

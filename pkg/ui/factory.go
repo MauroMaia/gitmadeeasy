@@ -1,0 +1,37 @@
+package ui
+
+import (
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
+	status "github.com/MauroMaia/gitmadeeasy/pkg/ui/status"
+	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
+	"github.com/jroimartin/gocui"
+)
+
+func DrawLeftView(g *gocui.Gui, xBegins int, painelXsize int, viewName string) {
+	xEnd := xBegins + painelXsize - 1
+
+	switch viewName {
+	case constants.FILE_CHANGED_VIEW:
+		status.LayoutShowStatus(g, xBegins+1, 0, xEnd)
+		break
+	case constants.BRANCH_LIST_VIEW:
+		branch.LayoutListBranches(g, xBegins+1, 0, xEnd)
+		break
+	default:
+		utils.Logger.Warnf("This view has no process to be created on the left panel %s\n", viewName)
+	}
+}
+
+func DrawRightView(g *gocui.Gui, xBegins int, painelXsize int, viewName string) {
+	xEnd := xBegins + painelXsize
+
+	switch viewName {
+	case constants.COMMIT_LIST_VIEW:
+		commit.LayoutListCommits(g, xBegins+1, 0, xEnd)
+		break
+	default:
+		utils.Logger.Warnf("This view has no process to be created on the left panel %s\n", viewName)
+	}
+}

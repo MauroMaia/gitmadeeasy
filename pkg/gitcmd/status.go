@@ -25,5 +25,13 @@ func ListFilesChanged() []string {
 
 	var lines = strings.Split(out.String(), "\n")
 
+	/*
+	 * TODO: create an object in memory with this data to allow better ui drawing
+	 * Each line has the following format:
+	 *		1º char staged - with major type of change (M: modified, R: renamed, D: Deleted, A/??: Added, etc?)
+	 *		2º char local change - with major type of change (M: modified, R: renamed, D: Deleted, A/??: Added, etc?)
+	 *		3º char+ path to the file changed
+	 */
+
 	return lines
 }

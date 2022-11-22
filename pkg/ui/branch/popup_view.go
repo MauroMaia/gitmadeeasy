@@ -10,22 +10,21 @@ import (
 
 func DisplayPopUp(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
-	if v, err := g.SetView(constants.NEW_COMMIT_POPUP, maxX/2-30, maxY/2, maxX/2+30, maxY/2+2); err != nil {
+	if v, err := g.SetView(constants.NEW_BRANCH_POPUP, maxX/2-30, maxY/2, maxX/2+30, maxY/2+2); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
 
-		if _, err := g.SetCurrentView(constants.NEW_COMMIT_POPUP); err != nil {
+		if _, err := g.SetCurrentView(constants.NEW_BRANCH_POPUP); err != nil {
 			return err
 		}
 		v.Editable = true
 		v.Title = "Write new branch name"
 
-		if _, err := utils.SetCurrentViewOnTop(g, constants.NEW_COMMIT_POPUP); err != nil {
+		if _, err := utils.SetCurrentViewOnTop(g, constants.NEW_BRANCH_POPUP); err != nil {
 			utils.Logger.Fatalln(err)
 		}
-		constants.SELECTED_MENU = constants.NEW_COMMIT_POPUP
-
+		constants.HIGHLIGTH_VIEW = constants.NEW_BRANCH_POPUP
 	}
 	return nil
 }
@@ -49,8 +48,9 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 			v.SetCursor(0, 46)
 		} else {
 			RefreshBranchList()
-			g.DeleteView(constants.NEW_COMMIT_POPUP)
-			constants.SELECTED_MENU = constants.BRANCH_LIST_VIEW
+			g.DeleteView(constants.NEW_BRANCH_POPUP)
+			constants.LEFT_VIEW = constants.BRANCH_LIST_VIEW
+			constants.HIGHLIGTH_VIEW = constants.MENU_VIEW
 		}
 
 	}
@@ -59,8 +59,8 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 
 func quitPopup(g *gocui.Gui, v *gocui.View) error {
 
-	g.DeleteView(constants.NEW_COMMIT_POPUP)
-	constants.SELECTED_MENU = constants.MENU_VIEW
+	g.DeleteView(constants.NEW_BRANCH_POPUP)
+	constants.HIGHLIGTH_VIEW = constants.MENU_VIEW
 
 	return nil
 }
