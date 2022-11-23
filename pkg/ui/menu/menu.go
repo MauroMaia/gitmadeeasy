@@ -92,7 +92,7 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 	switch l {
 	case B_NEW_BRANCH:
 		branch.DisplayPopUp(g)
-		constants.HIGHLIGTH_VIEW = constants.NEW_BRANCH_POPUP
+		constants.HIGHLIGHT_VIEW = constants.NEW_BRANCH_POPUP
 		break
 	case B_SHOW_COMMITS:
 		g.DeleteView(constants.LEFT_VIEW)
@@ -100,20 +100,21 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 		constants.LEFT_VIEW = constants.COMMIT_LIST_VIEW
 		constants.RIGTH_VIEW = ""
 		//TODO - constants.RIGTH_VIEW = constants.SHOW_CHANGES_IN_COMMIT_VIEW
-		constants.HIGHLIGTH_VIEW = constants.COMMIT_LIST_VIEW
+		constants.HIGHLIGHT_VIEW = constants.COMMIT_LIST_VIEW
 		break
 	case B_SHOW_BRANCHS:
 		g.DeleteView(constants.LEFT_VIEW)
 		g.DeleteView(constants.RIGTH_VIEW)
 		constants.LEFT_VIEW = constants.BRANCH_LIST_VIEW
-		constants.HIGHLIGTH_VIEW = constants.BRANCH_LIST_VIEW
+		constants.HIGHLIGHT_VIEW = constants.BRANCH_LIST_VIEW
 		break
 	case B_COMMIT_CHANGES:
 		g.DeleteView(constants.LEFT_VIEW)
 		g.DeleteView(constants.RIGTH_VIEW)
 		constants.LEFT_VIEW = constants.FILE_CHANGED_VIEW
-		//TODO - constants.HIGHLIGTH_VIEW = constants.DIFF_VIEW
-
+		constants.RIGTH_VIEW = constants.DIFF_VIEW
+		constants.HIGHLIGHT_VIEW = constants.FILE_CHANGED_VIEW
+		break
 	default:
 		// not expected to do anything
 		return nil

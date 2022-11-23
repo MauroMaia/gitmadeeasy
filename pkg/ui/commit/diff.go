@@ -8,39 +8,39 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-var commitsIds []string
-var posListView = 0
+var diffLines []string
+var pos = 0
 
 func init() {
-	commitsIds = gitcmd.ListCommitIDs()
+	diffLines = gitcmd.GetDiffPatch()
 }
 
-func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
+func LayoutDiff(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
 
 	_, maxY := g.Size()
 
-	v, err := g.SetView(constants.COMMIT_LIST_VIEW, xBegins, yBegins, xEnd, maxY-3)
+	v, err := g.SetView(constants.DIFF_VIEW, xBegins, yBegins, xEnd, maxY-3)
 	if err != nil && err != gocui.ErrUnknownView {
 		utils.Logger.Fatalln(err)
 	}
 
 	v.Clear()
 
-	for _, value := range commitsIds {
+	for _, value := range diffLines {
 		_, _ = fmt.Fprintln(v, value)
 	}
 
-	v.Title = "Last Commits"
+	v.Title = "Diff"
 	// TODO - create an option in Settings
 	v.Wrap = true
 
 	return v
 }
 
-func menuCursorDown(g *gocui.Gui, v *gocui.View) error {
+func diffCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
-		if posListView+2 > len(commitsIds) {
+		if pos+2 > len(commitsIds) {
 			// reach the bottom of the list
 			return nil
 		}
@@ -51,12 +51,12 @@ func menuCursorDown(g *gocui.Gui, v *gocui.View) error {
 				return err
 			}
 		}
-		posListView++
+		pos++
 	}
 	return nil
 }
 
-func menuCursorUp(g *gocui.Gui, v *gocui.View) error {
+func diffCursorUp(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		ox, oy := v.Origin()
 		cx, cy := v.Cursor()
@@ -65,7 +65,7 @@ func menuCursorUp(g *gocui.Gui, v *gocui.View) error {
 				return err
 			}
 		}
-		posListView--
+		pos--
 	}
 	return nil
 }

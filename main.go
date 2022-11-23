@@ -24,10 +24,10 @@ var (
 
 func main() {
 	utils.Logger.Infoln("##############")
-	utils.Logger.Infof("# Version %s\n", version)
-	utils.Logger.Infof("# Build Date %s\n", date)
-	utils.Logger.Infof("# Commit Id %s\n", commitHash)
-	utils.Logger.Infof("# Build Source %s\n", buildSource)
+	utils.Logger.Infof("# Version %s", version)
+	utils.Logger.Infof("# Build Date %s", date)
+	utils.Logger.Infof("# Commit Id %s", commitHash)
+	utils.Logger.Infof("# Build Source %s", buildSource)
 	utils.Logger.Infoln("##############")
 
 	if !utils.IsGitRepoDirectory() {
@@ -36,7 +36,7 @@ func main() {
 
 	g, err := gocui.NewGui(gocui.Output256)
 	if err != nil {
-		utils.Logger.Panicln(err)
+		utils.Logger.Panicf("Error setting output mode %s", err.Error())
 	}
 	defer g.Close()
 
@@ -49,7 +49,7 @@ func main() {
 	setKeybindings(g)
 
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
-		utils.Logger.Panicln(err)
+		utils.Logger.Panicf("Error in main loop: %s", err.Error())
 	}
 }
 
@@ -77,8 +77,8 @@ func layout(g *gocui.Gui) error {
 		ui.DrawRightView(g, xEnd, painelXsize, constants.RIGTH_VIEW)
 	}
 
-	if _, err := utils.SetCurrentViewOnTop(g, constants.HIGHLIGTH_VIEW); err != nil {
-		utils.Logger.Fatalln(err)
+	if _, err := utils.SetCurrentViewOnTop(g, constants.HIGHLIGHT_VIEW); err != nil {
+		utils.Logger.Fatalf("Error in SetCurrentViewOnTop: %s", err)
 	}
 
 	return nil
@@ -97,6 +97,9 @@ func setKeybindings(g *gocui.Gui) {
 	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
 		utils.Logger.Panicln(err)
 	}
+	if err := g.SetKeybinding("", gocui.KeyTab, gocui.ModNone, switchHighlightView); err != nil {
+		utils.Logger.Panicln(err)
+	}
 
 	//
 	// Panel specific Keybindings
@@ -110,4 +113,23 @@ func setKeybindings(g *gocui.Gui) {
 	if err := commit.Keybindings(g); err != nil {
 		utils.Logger.Panicln(err)
 	}
+}
+
+func switchHighlightView(g *gocui.Gui, v *gocui.View) error {
+
+	if constants.HIGHLIGHT_VIEW == constants.MENU_VIEW {
+		return nil
+	}
+
+	if constants.LEFT_VIEW == constants.HIGHLIGHT_VIEW {
+		if constants.RIGTH_VIEW != "" {
+			constants.HIGHLIGHT_VIEW = constants.RIGTH_VIEW
+		}
+	} else if constants.RIGTH_VIEW == constants.HIGHLIGHT_VIEW {
+		if constants.LEFT_VIEW != "" {
+			constants.HIGHLIGHT_VIEW = constants.LEFT_VIEW
+		}
+	}
+
+	return nil
 }

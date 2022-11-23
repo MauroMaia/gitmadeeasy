@@ -30,7 +30,10 @@ func factory(g *gocui.Gui, xBegins int, xEnd int, yEnd int, viewName string) {
 	case constants.COMMIT_LIST_VIEW:
 		commit.LayoutListCommits(g, xBegins, yEnd, xEnd)
 		break
+	case constants.DIFF_VIEW:
+		commit.LayoutDiff(g, xBegins, yEnd, xEnd)
+		break
 	default:
-		utils.Logger.Warnf("This view has no process to be created on the left panel %s\n", viewName)
+		utils.Logger.Warnf("This view has no process to be created on the left panel %s", viewName)
 	}
 }

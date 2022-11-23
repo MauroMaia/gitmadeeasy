@@ -24,7 +24,7 @@ func DisplayPopUp(g *gocui.Gui) error {
 		if _, err := utils.SetCurrentViewOnTop(g, constants.NEW_BRANCH_POPUP); err != nil {
 			utils.Logger.Fatalln(err)
 		}
-		constants.HIGHLIGTH_VIEW = constants.NEW_BRANCH_POPUP
+		constants.HIGHLIGHT_VIEW = constants.NEW_BRANCH_POPUP
 	}
 	return nil
 }
@@ -50,7 +50,7 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 			RefreshBranchList()
 			g.DeleteView(constants.NEW_BRANCH_POPUP)
 			constants.LEFT_VIEW = constants.BRANCH_LIST_VIEW
-			constants.HIGHLIGTH_VIEW = constants.MENU_VIEW
+			constants.HIGHLIGHT_VIEW = constants.MENU_VIEW
 		}
 
 	}
@@ -60,7 +60,7 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 func quitPopup(g *gocui.Gui, v *gocui.View) error {
 
 	g.DeleteView(constants.NEW_BRANCH_POPUP)
-	constants.HIGHLIGTH_VIEW = constants.MENU_VIEW
+	constants.HIGHLIGHT_VIEW = constants.MENU_VIEW
 
 	return nil
 }
