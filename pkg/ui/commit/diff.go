@@ -27,7 +27,18 @@ func LayoutDiff(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
 	v.Clear()
 
 	for _, value := range diffLines {
-		_, _ = fmt.Fprintln(v, value)
+		if len(value) > 0 && value[0:1] != " " {
+			switch value[0:1] {
+			case "+":
+				_, _ = fmt.Fprintln(v, utils.TextToGreen(value))
+			case "-":
+				_, _ = fmt.Fprintln(v, utils.TextToRed(value))
+			default:
+				_, _ = fmt.Fprintln(v, value)
+			}
+		} else {
+			_, _ = fmt.Fprintln(v, value)
+		}
 	}
 
 	v.Title = "Diff"
