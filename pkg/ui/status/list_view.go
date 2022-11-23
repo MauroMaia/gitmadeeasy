@@ -26,8 +26,24 @@ func LayoutShowStatus(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.V
 
 	v.Clear()
 
+	// FIXME - do this after data received to run only once
 	for _, value := range commitsIds {
-		_, _ = fmt.Fprintln(v, value)
+		if len(value) > 0 && value[0:1] != " " {
+			switch value[0:1] {
+			case "M":
+				_, _ = fmt.Fprintln(v, utils.TextToYellow(value))
+			case "R":
+				_, _ = fmt.Fprintln(v, utils.TextToBlue(value))
+			case "A":
+				_, _ = fmt.Fprintln(v, utils.TextToGreen(value))
+			case "D":
+				_, _ = fmt.Fprintln(v, utils.TextToRed(value))
+			default:
+				_, _ = fmt.Fprintln(v, value)
+			}
+		} else {
+			_, _ = fmt.Fprintln(v, value)
+		}
 	}
 
 	v.Title = "Files Changed"
