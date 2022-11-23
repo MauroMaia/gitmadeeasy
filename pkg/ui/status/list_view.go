@@ -6,13 +6,65 @@ import (
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
+	"time"
 )
 
-var commitsIds []string
+var content = ""
 var pos = 0
+var maxPos = 0
+
+var ticker *time.Ticker
+var done = make(chan bool)
 
 func init() {
-	commitsIds = gitcmd.ListFilesChanged()
+	utils.Logger.Traceln("init - status.list_view at")
+	loadFilesStatusStatus()
+	rescheduleTimer()
+}
+
+func loadFilesStatusStatus() {
+	result := gitcmd.ListFilesChanged()
+	result = utils.DeleteEmpty(result)
+	maxPos = len(result)
+	content = ""
+
+	for _, value := range result {
+		if len(value) > 0 && value[0:1] != " " {
+			switch value[0:1] {
+			case "M":
+				content += utils.TextToYellow(value) + "\n"
+			case "R":
+				content += utils.TextToBlue(value) + "\n"
+			case "A":
+				content += utils.TextToGreen(value) + "\n"
+			case "D":
+				content += utils.TextToRed(value) + "\n"
+			default:
+				content += value + "\n"
+			}
+		} else {
+			content += value + "\n"
+		}
+	}
+}
+
+func rescheduleTimer() {
+	utils.Logger.Infoln("Ticker reschedule")
+
+	ticker = time.NewTicker(15 * time.Second)
+
+	go func() {
+		for {
+			select {
+			case <-done:
+				// Stops this ticker it's possible but not expected
+				return
+			case _ = <-ticker.C:
+				utils.Logger.Debugln("Tick at")
+				loadFilesStatusStatus()
+			}
+		}
+	}()
 }
 
 func LayoutShowStatus(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
@@ -26,25 +78,7 @@ func LayoutShowStatus(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.V
 
 	v.Clear()
 
-	// FIXME - do this after data received to run only once
-	for _, value := range commitsIds {
-		if len(value) > 0 && value[0:1] != " " {
-			switch value[0:1] {
-			case "M":
-				_, _ = fmt.Fprintln(v, utils.TextToYellow(value))
-			case "R":
-				_, _ = fmt.Fprintln(v, utils.TextToBlue(value))
-			case "A":
-				_, _ = fmt.Fprintln(v, utils.TextToGreen(value))
-			case "D":
-				_, _ = fmt.Fprintln(v, utils.TextToRed(value))
-			default:
-				_, _ = fmt.Fprintln(v, value)
-			}
-		} else {
-			_, _ = fmt.Fprintln(v, value)
-		}
-	}
+	_, _ = fmt.Fprintln(v, content)
 
 	v.Title = "Files Changed"
 
@@ -54,7 +88,7 @@ func LayoutShowStatus(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.V
 func MenuCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
-		if pos+2 > len(commitsIds) {
+		if pos+2 > maxPos {
 			// reatch the bottom of the list
 			return nil
 		}

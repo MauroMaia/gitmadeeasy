@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+const FILE_PATH = "/tmp/log.txt"
+
 var Logger = log.StandardLogger()
 
 func init() {
@@ -20,11 +22,12 @@ func SetLoggerOptions(useColor bool, verbose bool) {
 		PadLevelText:           true,
 	})
 
-	file, _ := os.Create("/tmp/log.txt")
+	_ = os.Remove(FILE_PATH)
+	file, _ := os.Create(FILE_PATH)
 
 	Logger.SetOutput(file)
 
 	if verbose == true {
-		Logger.SetLevel(log.DebugLevel)
+		Logger.SetLevel(log.TraceLevel)
 	}
 }
