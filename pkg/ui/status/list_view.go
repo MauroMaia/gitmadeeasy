@@ -117,3 +117,18 @@ func MenuCursorUp(g *gocui.Gui, v *gocui.View) error {
 	}
 	return nil
 }
+
+func StageFile(g *gocui.Gui, v *gocui.View) error {
+	var l string
+	var err error
+
+	_, cy := v.Cursor()
+	if l, err = v.Line(cy); err != nil {
+		return nil
+	}
+
+	gitcmd.StageFile(l)
+	loadFilesStatusStatus()
+
+	return nil
+}

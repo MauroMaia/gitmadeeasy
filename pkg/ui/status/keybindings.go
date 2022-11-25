@@ -17,6 +17,9 @@ func Keybindings(g *gocui.Gui) error {
 	if err := g.SetKeybinding(constants.FILE_CHANGED_VIEW, gocui.KeyCtrlSpace, gocui.ModNone, utils.QuitToMenu); err != nil {
 		return err
 	}
+	if err := g.SetKeybinding(constants.FILE_CHANGED_VIEW, gocui.KeyCtrlS, gocui.ModNone, StageFile); err != nil {
+		return err
+	}
 
 	return nil
 }
