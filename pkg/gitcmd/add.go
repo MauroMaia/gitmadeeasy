@@ -8,9 +8,10 @@ import (
 )
 
 func StageFile(filename string) []string {
-	// git branch --no-color --list --all
-	utils.Logger.Tracef("StageFile")
-	cmd := exec.Command("git", "add", filename[3:])
+
+	utils.Logger.WithField("filename", filename).Traceln("StageFile")
+
+	cmd := exec.Command("git", "add", filename)
 
 	var out bytes.Buffer
 	cmd.Stdout = &out

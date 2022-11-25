@@ -3,9 +3,11 @@ package commit
 import (
 	"fmt"
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
+	"strings"
 	"time"
 )
 
@@ -99,7 +101,16 @@ func MenuCursorDown(g *gocui.Gui, v *gocui.View) error {
 				return err
 			}
 		}
+
 		pos++
+
+		var line string
+		var err error
+
+		if line, err = v.Line(cy + 1); err != nil || line == "" {
+			return nil
+		}
+		commit.SetDiffForFile(strings.Trim(line[3:], " "))
 	}
 	return nil
 }
@@ -113,21 +124,30 @@ func MenuCursorUp(g *gocui.Gui, v *gocui.View) error {
 				return err
 			}
 		}
+
 		pos--
+
+		var line string
+		var err error
+
+		if line, err = v.Line(cy - 1); err != nil {
+			return nil
+		}
+		commit.SetDiffForFile(strings.Trim(line[3:], " "))
 	}
 	return nil
 }
 
 func StageFile(g *gocui.Gui, v *gocui.View) error {
-	var l string
+	var line string
 	var err error
 
 	_, cy := v.Cursor()
-	if l, err = v.Line(cy); err != nil {
+	if line, err = v.Line(cy); err != nil {
 		return nil
 	}
 
-	gitcmd.StageFile(l)
+	gitcmd.StageFile(strings.Trim(line[3:], " "))
 	loadFilesStatusStatus()
 
 	return nil

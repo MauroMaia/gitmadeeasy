@@ -10,9 +10,16 @@ import (
 
 var diffLines []string
 var pos = 0
+var maxPos = 0
 
 func init() {
 	diffLines = gitcmd.GetDiffPatch()
+	maxPos = len(diffLines)
+}
+
+func SetDiffForFile(filename string) {
+	diffLines = gitcmd.GetDiffPatchForFile(filename)
+	maxPos = len(diffLines)
 }
 
 func LayoutDiff(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
@@ -51,7 +58,7 @@ func LayoutDiff(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
 func diffCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
-		if pos+2 > len(commitsIds) {
+		if pos+2 > maxPos {
 			// reach the bottom of the list
 			return nil
 		}
