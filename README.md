@@ -1,5 +1,7 @@
 # gitmadeeasy
 
+## How to install
+
 ## License
 
 MIT License
