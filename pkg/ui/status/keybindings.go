@@ -1,6 +1,7 @@
 package commit
 
 import (
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/commit"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
@@ -20,6 +21,8 @@ func Keybindings(g *gocui.Gui) error {
 	if err := g.SetKeybinding(constants.FILE_CHANGED_VIEW, gocui.KeyCtrlS, gocui.ModNone, StageFile); err != nil {
 		return err
 	}
-
+	if err := g.SetKeybinding(constants.FILE_CHANGED_VIEW, gocui.KeyCtrlX, gocui.ModNone, commit.OpenPopup); err != nil {
+		return err
+	}
 	return nil
 }

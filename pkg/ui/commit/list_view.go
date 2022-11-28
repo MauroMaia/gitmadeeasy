@@ -12,6 +12,10 @@ var commitsIds []string
 var posListView = 0
 
 func init() {
+	LoadCommits()
+}
+
+func LoadCommits() {
 	commitsIds = gitcmd.ListCommitIDs()
 }
 

@@ -8,6 +8,9 @@ import (
 
 func Keybindings(g *gocui.Gui) error {
 
+	//
+	//	COMMIT_LIST_VIEW
+	//
 	if err := g.SetKeybinding(constants.COMMIT_LIST_VIEW, gocui.KeyArrowDown, gocui.ModNone, menuCursorDown); err != nil {
 		return err
 	}
@@ -18,6 +21,9 @@ func Keybindings(g *gocui.Gui) error {
 		return err
 	}
 
+	//
+	//	DIFF_VIEW
+	//
 	if err := g.SetKeybinding(constants.DIFF_VIEW, gocui.KeyArrowDown, gocui.ModNone, diffCursorDown); err != nil {
 		return err
 	}
@@ -28,5 +34,11 @@ func Keybindings(g *gocui.Gui) error {
 		return err
 	}
 
+	//
+	//	DIFF_VIEW
+	//
+	if err := g.SetKeybinding(constants.COMMIT_POPUP, gocui.KeyCtrlS, gocui.ModNone, quitPopup); err != nil {
+		return err
+	}
 	return nil
 }
