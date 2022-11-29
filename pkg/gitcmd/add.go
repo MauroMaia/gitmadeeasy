@@ -9,7 +9,10 @@ import (
 
 func StageFile(filename string) []string {
 
-	utils.Logger.WithField("filename", filename).Traceln("StageFile")
+	utils.Logger.WithField("filename", filename).
+		WithField("func", "StageFile").
+		WithField("cmd", "git add").
+		Traceln("Adding git file")
 
 	cmd := exec.Command("git", "add", filename)
 

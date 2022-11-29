@@ -7,7 +7,9 @@ import (
 
 func CreateNewBranch(name string, push bool) (bool, error) {
 
-	utils.Logger.Tracef("CreateNewBranch")
+	utils.Logger.WithField("func", "ListFilesChanged").
+		WithField("cmd", "git status -s").
+		Traceln("Get list of files changed")
 
 	// TODO validate input
 

@@ -14,9 +14,9 @@ var findRemotesRegex, _ = regexp.Compile("^remotes/(.*)/(.*)(.*)")
 
 func ListBranches() []model.Branch {
 
-	utils.Logger.Tracef("ListBranches")
-
-	// git branch --no-color --list --all
+	utils.Logger.WithField("func", "ListBranches").
+		WithField("cmd", "git branch --no-color --list --all").
+		Traceln("Listing branch's")
 
 	cmd := exec.Command("git", "branch", "--no-color", "--list", "--all")
 

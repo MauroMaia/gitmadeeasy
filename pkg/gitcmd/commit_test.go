@@ -17,7 +17,7 @@ func TestListCommitIDs(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			got := ListCommitIDs()
+			got := ListCommits()
 
 			vaultJsonBytes, err := json.Marshal(got)
 			if err != nil {
@@ -27,7 +27,7 @@ func TestListCommitIDs(t *testing.T) {
 			t.Logf("Got: %s\n", string(vaultJsonBytes))
 
 			if len(got) > 0 != tt.want {
-				t.Errorf("ListCommitIDs() got = %d, want > 0\n", len(got))
+				t.Errorf("ListCommits() got = %d, want > 0\n", len(got))
 			}
 		})
 	}

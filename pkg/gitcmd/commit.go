@@ -8,9 +8,11 @@ import (
 	"strings"
 )
 
-func ListCommitIDs() []string {
+func ListCommits() []string {
 
-	utils.Logger.Tracef("ListCommitIDs")
+	utils.Logger.WithField("func", "ListCommits").
+		WithField("cmd", "git log --pretty=%h - %cn - %s").
+		Traceln("Listing commits")
 
 	cmd := exec.Command("git", "log", "--pretty=%h - %cn - %s")
 
@@ -29,7 +31,11 @@ func ListCommitIDs() []string {
 
 func Commit(message string, amend bool) ([]string, error) {
 
-	utils.Logger.WithField("amend", amend).Tracef("commit")
+	utils.Logger.WithField("func", "Commit").
+		WithField("amend", amend).
+		WithField("message", message).
+		WithField("cmd", "git commit [--amend] -F /tmp/message").
+		Traceln("commit files")
 
 	_ = os.Remove("/tmp/message")
 	file, err := os.Create("/tmp/message")

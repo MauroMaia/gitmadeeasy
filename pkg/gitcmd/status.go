@@ -8,8 +8,11 @@ import (
 )
 
 func ListFilesChanged() []string {
-	// git branch --no-color --list --all
-	utils.Logger.Tracef("ListFilesChanged")
+
+	utils.Logger.WithField("func", "ListFilesChanged").
+		WithField("cmd", "git status -s").
+		Traceln("Get list of files changed")
+
 	cmd := exec.Command("git", "status", "-s")
 
 	var out bytes.Buffer

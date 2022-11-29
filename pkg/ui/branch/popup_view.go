@@ -38,7 +38,7 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 		l = ""
 	}
 	if len(l) > 0 {
-		_, err := gitcmd.CreateNewBranch(l, false)
+		err = gitcmd.CreateNewBranch(l, false)
 		if err != nil {
 			v.Clear()
 			v.Editable = false

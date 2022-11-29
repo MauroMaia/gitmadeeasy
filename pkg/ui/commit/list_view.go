@@ -16,7 +16,7 @@ func init() {
 }
 
 func LoadCommits() {
-	commitsIds = gitcmd.ListCommitIDs()
+	commitsIds = gitcmd.ListCommits()
 }
 
 func LayoutListCommits(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {

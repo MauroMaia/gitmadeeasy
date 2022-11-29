@@ -9,7 +9,9 @@ import (
 
 func GetDiffPatch() []string {
 
-	utils.Logger.Tracef("GetDiffPatch")
+	utils.Logger.WithField("func", "GetDiffPatch").
+		WithField("cmd", "git diff -p").
+		Traceln("Get diff from remote version in patch format")
 
 	cmd := exec.Command("git", "diff", "-p")
 
@@ -30,7 +32,10 @@ func GetDiffPatch() []string {
 }
 func GetDiffPatchForFile(filename string) []string {
 
-	utils.Logger.WithField("filename", filename).Traceln("GetDiffPatchForFile")
+	utils.Logger.WithField("func", "GetDiffPatchForFile").
+		WithField("filename", filename).
+		WithField("cmd", "git diff -p --").
+		Traceln("Get diff from remote version in patch format")
 
 	cmd := exec.Command("git", "diff", "-p", "--", filename)
 
