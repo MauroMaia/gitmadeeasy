@@ -1,10 +1,9 @@
 package gitcmd
 
 import (
-	"bytes"
+	"errors"
 	"github.com/MauroMaia/gitmadeeasy/pkg/model"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
-	"os/exec"
 	"regexp"
 	"strings"
 )
@@ -12,28 +11,22 @@ import (
 var findCurrentRegex, _ = regexp.Compile("^\\* (.*)")
 var findRemotesRegex, _ = regexp.Compile("^remotes/(.*)/(.*)(.*)")
 
-func ListBranches() []model.Branch {
+// TODO - fill the docs
+func ListBranches() ([]model.Branch, error) {
 
 	utils.Logger.WithField("func", "ListBranches").
 		WithField("cmd", "git branch --no-color --list --all").
 		Traceln("Listing branch's")
 
-	cmd := exec.Command("git", "branch", "--no-color", "--list", "--all")
+	output, exitCode, err := utils.ExecuteShellCmd("git", "branch", "--no-color", "--list", "--all")
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-
-	err := cmd.Run()
-
-	if err != nil {
-		utils.Logger.Infoln(out.String())
-		utils.Logger.Fatalln(err)
+	if err != nil || exitCode != 0 {
+		return nil, errors.New(output[0])
 	}
 
 	var result []model.Branch
 
-	var lines = strings.Split(out.String(), "\n")
-	for _, line := range lines {
+	for _, line := range output {
 
 		if "" == line {
 			continue
@@ -44,8 +37,12 @@ func ListBranches() []model.Branch {
 
 		if len(isCurrent) > 0 {
 			var name = strings.Trim(isCurrent[0], " ")
+
+			// FIXME - parse line to find if branch its local or remote or both
 			var islocal = true
+
 			var branch = model.NewBranch(name, islocal)
+
 			result = append(result, branch)
 			continue
 		}
@@ -54,11 +51,14 @@ func ListBranches() []model.Branch {
 
 		if len(match) > 0 {
 			var name = strings.Trim(match[0], " ")
+
+			// FIXME - parse line to find if branch its local or remote or both
 			var islocal = false
+
 			var branch = model.NewBranch(name, islocal)
 			result = append(result, branch)
 		}
 	}
 
-	return result
+	return result, nil
 }

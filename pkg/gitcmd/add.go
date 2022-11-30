@@ -1,33 +1,30 @@
 package gitcmd
 
 import (
-	"bytes"
+	"errors"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
-	"os/exec"
-	"strings"
+	"os"
 )
 
-func StageFile(filename string) []string {
+// StageFile func encapsulate the logic to prepare files to be submitted
+// It requires a filename with the path to the file
+func StageFile(filename string) ([]string, error) {
 
 	utils.Logger.WithField("filename", filename).
 		WithField("func", "StageFile").
 		WithField("cmd", "git add").
 		Traceln("Adding git file")
 
-	cmd := exec.Command("git", "add", filename)
-
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &out
-
-	err := cmd.Run()
-
-	if err != nil {
-		utils.Logger.Infoln(out.String())
-		utils.Logger.Fatalln(err)
+	// check if filename still exists
+	if _, err := os.Stat(filename); err != nil {
+		return nil, err
 	}
 
-	var lines = strings.Split(out.String(), "\n")
+	result, exitCode, err := utils.ExecuteShellCmd("git", "add", filename)
 
-	return lines
+	if err != nil || exitCode != 0 {
+		return nil, errors.New(result[0])
+	}
+
+	return result, nil
 }

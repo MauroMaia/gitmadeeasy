@@ -7,10 +7,15 @@ import (
 	"strings"
 )
 
-func ExecuteShellCmd(command string, name ...string) ([]string, int, error) {
+func ExecuteShellCmd(command string, args ...string) ([]string, int, error) {
 	// TODO validate input
 
-	cmd := exec.Command(command, name...)
+	Logger.WithField("func", "ExecuteShellCmd").
+		WithField("cmd", command).
+		WithField("args", args).
+		Traceln("Executing shell command")
+
+	cmd := exec.Command(command, args...)
 
 	var out bytes.Buffer
 	cmd.Stdout = &out

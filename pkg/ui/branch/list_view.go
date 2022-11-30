@@ -16,8 +16,9 @@ func init() {
 	RefreshBranchList()
 }
 
+// TODO - fill the docs
 func RefreshBranchList() {
-	branches = gitcmd.ListBranches()
+	branches, _ = gitcmd.ListBranches()
 }
 
 func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
@@ -41,6 +42,7 @@ func LayoutListBranches(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui
 	return v
 }
 
+// TODO - fill the docs
 func listCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
@@ -60,6 +62,7 @@ func listCursorDown(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
+// TODO - fill the docs
 func listCursorUp(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		ox, oy := v.Origin()

@@ -1,34 +1,28 @@
 package gitcmd
 
 import (
-	"bytes"
+	"errors"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"os"
-	"os/exec"
-	"strings"
 )
 
-func ListCommits() []string {
+// TODO - fill the docs
+func ListCommits() ([]string, error) {
 
 	utils.Logger.WithField("func", "ListCommits").
 		WithField("cmd", "git log --pretty=%h - %cn - %s").
 		Traceln("Listing commits")
 
-	cmd := exec.Command("git", "log", "--pretty=%h - %cn - %s")
+	result, exitCode, err := utils.ExecuteShellCmd("git", "log", "--pretty=%h - %cn - %s")
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-
-	err := cmd.Run()
-
-	if err != nil {
-		utils.Logger.Infoln(out.String())
-		utils.Logger.Fatalln(err)
+	if err != nil || exitCode != 0 {
+		return nil, errors.New(result[0])
 	}
-	var lines = utils.DeleteEmpty(strings.Split(out.String(), "\n"))
-	return lines
+
+	return utils.DeleteEmpty(result), nil
 }
 
+// TODO - fill the docs
 func Commit(message string, amend bool) ([]string, error) {
 
 	utils.Logger.WithField("func", "Commit").
@@ -47,22 +41,18 @@ func Commit(message string, amend bool) ([]string, error) {
 		return nil, err
 	}
 
-	var cmd *exec.Cmd
+	var result []string
+	var exitCode int
 
 	if amend {
-		cmd = exec.Command("git", "commit", "---amend", "-F", "/tmp/message")
+		result, exitCode, err = utils.ExecuteShellCmd("git", "commit", "---amend", "-F", "/tmp/message")
 	} else {
-		cmd = exec.Command("git", "commit", "-F", "/tmp/message")
+		result, exitCode, err = utils.ExecuteShellCmd("git", "commit", "-F", "/tmp/message")
 	}
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-
-	if err = cmd.Run(); err != nil {
-		utils.Logger.Infoln(out.String())
-		utils.Logger.Error(err)
-		return nil, err
+	if err != nil || exitCode != 0 {
+		return nil, errors.New(result[0])
 	}
-	var lines = utils.DeleteEmpty(strings.Split(out.String(), "\n"))
-	return lines, nil
+
+	return utils.DeleteEmpty(result), nil
 }

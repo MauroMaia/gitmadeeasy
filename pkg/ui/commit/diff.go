@@ -13,12 +13,13 @@ var pos = 0
 var maxPos = 0
 
 func init() {
-	diffLines = gitcmd.GetDiffPatch()
+	diffLines, _ = gitcmd.GetDiffPatch()
 	maxPos = len(diffLines)
 }
 
+// TODO - fill the docs
 func SetDiffForFile(filename string) {
-	diffLines = gitcmd.GetDiffPatchForFile(filename)
+	diffLines, _ = gitcmd.GetDiffPatchForFile(filename)
 	maxPos = len(diffLines)
 }
 
@@ -55,6 +56,7 @@ func LayoutDiff(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
 	return v
 }
 
+// TODO - fill the docs
 func diffCursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
@@ -74,6 +76,7 @@ func diffCursorDown(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
+// TODO - fill the docs
 func diffCursorUp(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		ox, oy := v.Origin()

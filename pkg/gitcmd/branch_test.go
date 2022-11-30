@@ -17,7 +17,7 @@ func TestListBranches(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			got := ListBranches()
+			got, _ := ListBranches()
 
 			vaultJsonBytes, err := json.Marshal(got)
 			if err != nil {

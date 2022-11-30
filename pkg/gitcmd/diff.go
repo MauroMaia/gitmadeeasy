@@ -1,56 +1,39 @@
 package gitcmd
 
 import (
-	"bytes"
+	"errors"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
-	"os/exec"
-	"strings"
 )
 
-func GetDiffPatch() []string {
+// TODO - fill the docs
+func GetDiffPatch() ([]string, error) {
 
 	utils.Logger.WithField("func", "GetDiffPatch").
 		WithField("cmd", "git diff -p").
 		Traceln("Get diff from remote version in patch format")
 
-	cmd := exec.Command("git", "diff", "-p")
+	result, exitCode, err := utils.ExecuteShellCmd("git", "diff", "-p")
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &out
-
-	err := cmd.Run()
-
-	if err != nil {
-		utils.Logger.Infoln(out.String())
-		utils.Logger.Fatalln(err)
+	if err != nil || exitCode != 0 {
+		return nil, errors.New(result[0])
 	}
 
-	var lines = strings.Split(out.String(), "\n")
-
-	return lines
+	return result, nil
 }
-func GetDiffPatchForFile(filename string) []string {
+
+// TODO - fill the docs
+func GetDiffPatchForFile(filename string) ([]string, error) {
 
 	utils.Logger.WithField("func", "GetDiffPatchForFile").
 		WithField("filename", filename).
 		WithField("cmd", "git diff -p --").
 		Traceln("Get diff from remote version in patch format")
 
-	cmd := exec.Command("git", "diff", "-p", "--", filename)
+	result, exitCode, err := utils.ExecuteShellCmd("git", "diff", "-p", "--", filename)
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &out
-
-	err := cmd.Run()
-
-	if err != nil {
-		utils.Logger.Infoln(out.String())
-		utils.Logger.Fatalln(err)
+	if err != nil || exitCode != 0 {
+		return nil, errors.New(result[0])
 	}
 
-	var lines = strings.Split(out.String(), "\n")
-
-	return lines
+	return result, nil
 }

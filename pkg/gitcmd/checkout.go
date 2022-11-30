@@ -5,6 +5,7 @@ import (
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 )
 
+// TODO - fill the docs
 func CreateNewBranch(branchName string, push bool) error {
 
 	utils.Logger.WithField("func", "CreateNewBranch").
@@ -17,7 +18,7 @@ func CreateNewBranch(branchName string, push bool) error {
 
 	result, exitCode, err := utils.ExecuteShellCmd("git", "checkout", "-b", branchName)
 
-	if err != nil && exitCode != 0 {
+	if err != nil || exitCode != 0 {
 		return errors.New(result[0])
 	}
 
@@ -31,7 +32,7 @@ func CreateNewBranch(branchName string, push bool) error {
 		// FIXME - remote as origin should not be here hardcoded
 		result, exitCode, err = utils.ExecuteShellCmd("git", "push", "--set-upstream", "origin", branchName)
 
-		if err != nil && exitCode != 0 {
+		if err != nil || exitCode != 0 {
 			return errors.New(result[0])
 		}
 	}

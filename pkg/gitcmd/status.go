@@ -1,32 +1,22 @@
 package gitcmd
 
 import (
-	"bytes"
+	"errors"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
-	"os/exec"
-	"strings"
 )
 
-func ListFilesChanged() []string {
+// TODO - fill the docs
+func ListFilesChanged() ([]string, error) {
 
 	utils.Logger.WithField("func", "ListFilesChanged").
 		WithField("cmd", "git status -s").
 		Traceln("Get list of files changed")
 
-	cmd := exec.Command("git", "status", "-s")
+	result, exitCode, err := utils.ExecuteShellCmd("git", "status", "-s")
 
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	cmd.Stderr = &out
-
-	err := cmd.Run()
-
-	if err != nil {
-		utils.Logger.Infoln(out.String())
-		utils.Logger.Fatalln(err)
+	if err != nil || exitCode != 0 {
+		return nil, errors.New(result[0])
 	}
-
-	var lines = strings.Split(out.String(), "\n")
 
 	/*
 	 * TODO: create an object in memory with this data to allow better ui drawing
@@ -36,5 +26,5 @@ func ListFilesChanged() []string {
 	 *		3º char+ path to the file changed
 	 */
 
-	return lines
+	return utils.DeleteEmpty(result), nil
 }

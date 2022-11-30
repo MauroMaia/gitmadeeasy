@@ -25,8 +25,7 @@ func init() {
 }
 
 func loadFilesStatusStatus() {
-	result := gitcmd.ListFilesChanged()
-	result = utils.DeleteEmpty(result)
+	result, _ := gitcmd.ListFilesChanged()
 	maxPos = len(result)
 	content = ""
 
