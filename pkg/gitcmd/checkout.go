@@ -5,22 +5,36 @@ import (
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 )
 
-func CreateNewBranch(name string, push bool) (bool, error) {
+func CreateNewBranch(branchName string, push bool) error {
 
-	utils.Logger.WithField("func", "ListFilesChanged").
-		WithField("cmd", "git status -s").
-		Traceln("Get list of files changed")
+	utils.Logger.WithField("func", "CreateNewBranch").
+		WithField("branchName", branchName).
+		WithField("push", push).
+		WithField("cmd", "git checkout -b").
+		Traceln("Create local branch")
 
 	// TODO validate input
 
-	// git switch <name> ?? vs checkout -b <name>
-	// TODO git push --set-upstream origin wip-create-menu
-	result, exitCode, err := utils.ExecuteShellCmd("git", "checkout", "-b", name)
+	result, exitCode, err := utils.ExecuteShellCmd("git", "checkout", "-b", branchName)
 
-	returnVal := err != nil && exitCode != 0
-	if returnVal {
-		return returnVal, errors.New(result[0])
+	if err != nil && exitCode != 0 {
+		return errors.New(result[0])
 	}
-	// TODO validate shell output
-	return returnVal, nil
+
+	if push {
+		utils.Logger.WithField("func", "CreateNewBranch").
+			WithField("branchName", branchName).
+			WithField("push", push).
+			WithField("cmd", "git push --set-upstream origin").
+			Traceln("push local branch to remote (hardcoded origin)")
+
+		// FIXME - remote as origin should not be here hardcoded
+		result, exitCode, err = utils.ExecuteShellCmd("git", "push", "--set-upstream", "origin", branchName)
+
+		if err != nil && exitCode != 0 {
+			return errors.New(result[0])
+		}
+	}
+
+	return nil
 }
