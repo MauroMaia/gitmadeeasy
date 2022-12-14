@@ -1,4 +1,6 @@
-# gitmadeeasy
+# Git Made Easy (gitmadeeasy)
+
+This is a project ...
 
 ## How to install
 
