@@ -31,28 +31,3 @@ func ListFilesChanged() ([]string, error) {
 
 	return utils.DeleteEmpty(result), nil
 }
-
-// TODO - fill the docs
-func BranchHasChanges() (bool, error) {
-
-	_, err := Fetch()
-
-	if err != nil {
-		return false, err
-	}
-
-	utils.Logger.WithField("func", "BranchHasChanges").
-		WithField("cmd", "git status -s -b").
-		Traceln("Get list of files changed")
-
-	result, exitCode, err := utils.ExecuteShellCmd("git", "status", "-s", "-b")
-
-	if err != nil || exitCode != 0 {
-		return false, errors.New(result[0])
-	}
-
-	resultStr := result[0]
-	resultStrResut := findBranchStatus.FindAllStringSubmatch(resultStr, -1)
-
-	return resultStrResut != nil, nil
-}

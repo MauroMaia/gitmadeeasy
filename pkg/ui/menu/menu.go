@@ -14,27 +14,43 @@ const B_SHOW_COMMITS = "Commits List"
 const B_SHOW_BRANCHS = "Branch's List"
 const B_COMMIT_CHANGES = "Commit changes"
 const B_PULL = "Pull"
+const B_PUSH = "Push"
 
 var B_PULL_IN_DYSPLAY = B_PULL
+var B_PUSH_IN_DYSPLAY = B_PUSH
 
 const B_SETTINGS = "Settings"
 
-var buttons [9]string
+var buttons [10]string
 
 func init() {
+	createLabels()
+}
 
-	hasChange, err := gitcmd.BranchHasChanges()
+func createLabels() {
+
+	ahead, err := gitcmd.GetNrOfCommitsAhead()
+	if err != nil {
+		utils.Logger.Fatalln(err)
+	}
+	behind, err := gitcmd.GetNrOfCommitsBehind()
 	if err != nil {
 		utils.Logger.Fatalln(err)
 	}
 
-	if hasChange == true {
+	B_PULL_IN_DYSPLAY = B_PULL
+	if behind != "0" {
 		B_PULL_IN_DYSPLAY = B_PULL + " " +
-			utils.TextToRed("↓") +
-			utils.TextToGreen("↑")
+			utils.TextToRed(behind+" ↓")
 	}
 
-	buttons = [9]string{
+	B_PUSH_IN_DYSPLAY = B_PUSH
+	if ahead != "0" {
+		B_PUSH_IN_DYSPLAY = B_PUSH + " " +
+			utils.TextToGreen(ahead+" ↑")
+	}
+
+	buttons = [10]string{
 		B_NEW_BRANCH,
 		B_SHOW_BRANCHS,
 		"---",
@@ -42,12 +58,17 @@ func init() {
 		B_COMMIT_CHANGES,
 		"---",
 		B_PULL_IN_DYSPLAY,
+		B_PUSH_IN_DYSPLAY,
 		"---",
 		B_SETTINGS,
 	}
 }
 
 func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *gocui.View {
+
+	// FIXME - move this to backgroud task / timer
+	createLabels()
+
 	var stringLen = 0
 	for _, str := range buttons {
 		if len(str) > stringLen {

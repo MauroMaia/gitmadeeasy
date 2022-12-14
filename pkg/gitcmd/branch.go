@@ -62,3 +62,20 @@ func ListBranches() ([]model.Branch, error) {
 
 	return result, nil
 }
+
+// TODO - fill the docs
+func GetCurrentBranchName() (string, error) {
+
+	utils.Logger.
+		WithField("func", "Fetch").
+		WithField("cmd", "git fetch --all").
+		Traceln("Get changes from remote repositories")
+
+	result, exitCode, err := utils.ExecuteShellCmd("git", "branch", "--show-current")
+
+	if err != nil || exitCode != 0 {
+		return "", errors.New(result[0])
+	}
+
+	return result[0], nil
+}
