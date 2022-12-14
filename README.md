@@ -2,6 +2,12 @@
 
 ## How to install
 
+TBD
+
+## Table of command functions
+
+TBD
+
 ## License
 
 MIT License
