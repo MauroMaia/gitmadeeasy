@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
@@ -12,16 +13,38 @@ const B_NEW_BRANCH = "New Branch"
 const B_SHOW_COMMITS = "Commits List"
 const B_SHOW_BRANCHS = "Branch's List"
 const B_COMMIT_CHANGES = "Commit changes"
+const B_PULL = "Pull"
+
+var B_PULL_IN_DYSPLAY = B_PULL
+
 const B_SETTINGS = "Settings"
 
-var buttons = [7]string{
-	B_NEW_BRANCH,
-	B_SHOW_BRANCHS,
-	"---",
-	B_SHOW_COMMITS,
-	B_COMMIT_CHANGES,
-	"---",
-	B_SETTINGS,
+var buttons [9]string
+
+func init() {
+
+	hasChange, err := gitcmd.BranchHasChanges()
+	if err != nil {
+		utils.Logger.Fatalln(err)
+	}
+
+	if hasChange == true {
+		B_PULL_IN_DYSPLAY = B_PULL + " " +
+			utils.TextToRed("↓") +
+			utils.TextToGreen("↑")
+	}
+
+	buttons = [9]string{
+		B_NEW_BRANCH,
+		B_SHOW_BRANCHS,
+		"---",
+		B_SHOW_COMMITS,
+		B_COMMIT_CHANGES,
+		"---",
+		B_PULL_IN_DYSPLAY,
+		"---",
+		B_SETTINGS,
+	}
 }
 
 func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *gocui.View {
