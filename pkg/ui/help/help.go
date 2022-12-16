@@ -10,6 +10,9 @@ import (
 const HELP_TEXT_MENU = "KeyArrow Down/UP Slect menu option | Enter select Option"
 const HELP_TEXT_LIST = "KeyArrow Down/UP to scroll | Press Crontol + space to go back to menu"
 const HELP_TEXT_FILE_CHANGED = "KeyArrow Down/UP to scroll | Press Crontol + S to add file | Press Crontol + X write commit"
+
+const HELP_PUSH_POP = "Press Space (un)toggle option | Press Crontol + Space go back"
+
 const HELP_TEXT_DEFAULT = "This view(%s) does not yet have a help information. More at: https://github.com/MauroMaia/gitmadeeasy"
 
 func LayoutShowHelpView(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
@@ -36,7 +39,9 @@ func LayoutShowHelpView(g *gocui.Gui, xBegins int, yBegins int) *gocui.View {
 	case constants.FILE_CHANGED_VIEW:
 		_, _ = fmt.Fprintln(v, HELP_TEXT_FILE_CHANGED)
 		break
-
+	case constants.PUSH_POPUP:
+		_, _ = fmt.Fprintln(v, HELP_PUSH_POP)
+		break
 	default:
 		_, _ = fmt.Fprintf(v, HELP_TEXT_DEFAULT, constants.HIGHLIGHT_VIEW)
 	}

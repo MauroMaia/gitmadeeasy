@@ -5,8 +5,10 @@ import (
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/push"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
+	"strings"
 )
 
 const B_NEW_BRANCH = "New Branch"
@@ -45,8 +47,10 @@ func createLabels() {
 	}
 
 	B_PUSH_IN_DYSPLAY = B_PUSH
+	BPushToUi := B_PUSH
 	if ahead != "0" {
-		B_PUSH_IN_DYSPLAY = B_PUSH + " " +
+		B_PUSH_IN_DYSPLAY = B_PUSH + " " + ahead + " ↑"
+		BPushToUi = B_PUSH + " " +
 			utils.TextToGreen(ahead+" ↑")
 	}
 
@@ -58,7 +62,7 @@ func createLabels() {
 		B_COMMIT_CHANGES,
 		"---",
 		B_PULL_IN_DYSPLAY,
-		B_PUSH_IN_DYSPLAY,
+		BPushToUi,
 		"---",
 		B_SETTINGS,
 	}
@@ -66,7 +70,7 @@ func createLabels() {
 
 func LayoutTopMenuOptions(g *gocui.Gui, xBegins int, yBegins int, yEnd int) *gocui.View {
 
-	// FIXME - move this to backgroud task / timer
+	// FIXME - move this to background task / timer
 	createLabels()
 
 	var stringLen = 0
@@ -124,7 +128,7 @@ func MenuCursorUp(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func getLine(g *gocui.Gui, v *gocui.View) error {
+func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 	var l string
 	var err error
 
@@ -133,7 +137,7 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 		l = ""
 	}
 
-	switch l {
+	switch strings.Trim(l, " ") {
 	case B_NEW_BRANCH:
 		branch.DisplayPopUp(g)
 		constants.HIGHLIGHT_VIEW = constants.NEW_BRANCH_POPUP
@@ -159,6 +163,12 @@ func getLine(g *gocui.Gui, v *gocui.View) error {
 		constants.RIGTH_VIEW = constants.DIFF_VIEW
 		constants.HIGHLIGHT_VIEW = constants.FILE_CHANGED_VIEW
 		break
+	case B_PULL_IN_DYSPLAY:
+		break
+	case B_PUSH_IN_DYSPLAY:
+		push.DisplayPopUp(g)
+		constants.HIGHLIGHT_VIEW = constants.PUSH_POPUP
+		break
 	default:
 		// not expected to do anything
 		return nil
@@ -175,7 +185,7 @@ func Keybindings(g *gocui.Gui) error {
 	if err := g.SetKeybinding(constants.MENU_VIEW, gocui.KeyArrowUp, gocui.ModNone, MenuCursorUp); err != nil {
 		return err
 	}
-	if err := g.SetKeybinding(constants.MENU_VIEW, gocui.KeyEnter, gocui.ModNone, getLine); err != nil {
+	if err := g.SetKeybinding(constants.MENU_VIEW, gocui.KeyEnter, gocui.ModNone, onEnterPress); err != nil {
 		return err
 	}
 	return nil
