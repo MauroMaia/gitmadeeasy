@@ -6,6 +6,7 @@ import (
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
+	"strings"
 )
 
 var Force = false
@@ -52,20 +53,33 @@ func DisplayPopUp(g *gocui.Gui) error {
 
 func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 
-	_, err := gitcmd.Push(Force)
-	if err != nil {
-		v.Clear()
-		v.Editable = false
-		v.BgColor = gocui.ColorRed
-		v.Rewind()
-		_, _ = fmt.Fprintln(v, err.Error())
-		v.SetCursor(0, 0)
-	} else {
-		g.DeleteView(constants.PUSH_POPUP)
-		constants.LEFT_VIEW = constants.COMMIT_LIST_VIEW
-		constants.RIGTH_VIEW = constants.BRANCH_LIST_VIEW
-		constants.HIGHLIGHT_VIEW = constants.MENU_VIEW
-	}
+	v.Clear()
+	X, _ := v.Size()
+
+	rep := int(0.5 * float64(X-1))
+	fmt.Fprint(v, strings.Repeat("▒", rep))
+	fmt.Fprint(v, " 50%")
+
+	go func() {
+		_, err := gitcmd.Push(Force)
+
+		g.Update(func(g *gocui.Gui) error {
+			if err != nil {
+				v.Clear()
+				v.Editable = false
+				v.BgColor = gocui.ColorRed
+				v.Rewind()
+				_, _ = fmt.Fprintln(v, err.Error())
+				v.SetCursor(0, 0)
+			} else {
+				g.DeleteView(constants.PUSH_POPUP)
+				constants.LEFT_VIEW = constants.COMMIT_LIST_VIEW
+				constants.RIGTH_VIEW = constants.BRANCH_LIST_VIEW
+				constants.HIGHLIGHT_VIEW = constants.MENU_VIEW
+			}
+			return nil
+		})
+	}()
 
 	return nil
 }
