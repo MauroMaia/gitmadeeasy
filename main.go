@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/help"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/pull"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/push"
 	status "github.com/MauroMaia/gitmadeeasy/pkg/ui/status"
 	"os"
@@ -119,6 +120,9 @@ func setKeybindings(g *gocui.Gui) {
 		utils.Logger.Panicln(err)
 	}
 	if err := push.Keybindings(g); err != nil {
+		utils.Logger.Panicln(err)
+	}
+	if err := pull.Keybindings(g); err != nil {
 		utils.Logger.Panicln(err)
 	}
 }

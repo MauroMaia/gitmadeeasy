@@ -5,6 +5,7 @@ import (
 	"github.com/MauroMaia/gitmadeeasy/pkg/gitcmd"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/branch"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/constants"
+	"github.com/MauroMaia/gitmadeeasy/pkg/ui/pull"
 	"github.com/MauroMaia/gitmadeeasy/pkg/ui/push"
 	"github.com/MauroMaia/gitmadeeasy/pkg/utils"
 	"github.com/jroimartin/gocui"
@@ -164,6 +165,8 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 		constants.HIGHLIGHT_VIEW = constants.FILE_CHANGED_VIEW
 		break
 	case B_PULL_IN_DYSPLAY:
+		pull.DisplayPopUp(g)
+		constants.HIGHLIGHT_VIEW = constants.PUll_POPUP
 		break
 	case B_PUSH_IN_DYSPLAY:
 		push.DisplayPopUp(g)
