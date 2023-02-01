@@ -24,7 +24,7 @@ var B_PUSH_IN_DYSPLAY = B_PUSH
 
 const B_SETTINGS = "Settings"
 
-var buttons [10]string
+var buttons []string
 
 func init() {
 	createLabels()
@@ -55,7 +55,7 @@ func createLabels() {
 			utils.TextToGreen(ahead+" ↑")
 	}
 
-	buttons = [10]string{
+	buttons = []string{
 		B_NEW_BRANCH,
 		B_SHOW_BRANCHS,
 		"---",
@@ -66,6 +66,7 @@ func createLabels() {
 		BPushToUi,
 		"---",
 		B_SETTINGS,
+		"LOG",
 	}
 }
 
@@ -171,6 +172,12 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 	case B_PUSH_IN_DYSPLAY:
 		push.DisplayPopUp(g)
 		constants.HIGHLIGHT_VIEW = constants.PUSH_POPUP
+		break
+	case "LOG":
+		// TODO - change this to popup???
+		g.DeleteView(constants.RIGTH_VIEW)
+		constants.RIGTH_VIEW = constants.LOG_VIEW
+		constants.HIGHLIGHT_VIEW = constants.LOG_VIEW
 		break
 	default:
 		// not expected to do anything
