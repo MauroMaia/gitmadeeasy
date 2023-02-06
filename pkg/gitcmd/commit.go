@@ -9,8 +9,7 @@ import (
 // TODO - fill the docs
 func ListCommits() ([]string, error) {
 
-	utils.Logger.WithField("func", "ListCommits").
-		WithField("cmd", "git log --pretty=%h - %cn - %s").
+	utils.Logger.WithField("cmd", "git log --pretty=%h - %cn - %s").
 		Traceln("Listing commits")
 
 	result, exitCode, err := utils.ExecuteShellCmd("git", "log", "--pretty=%h - %cn - %s")
@@ -25,8 +24,7 @@ func ListCommits() ([]string, error) {
 // TODO - fill the docs
 func Commit(message string, amend bool) ([]string, error) {
 
-	utils.Logger.WithField("func", "Commit").
-		WithField("amend", amend).
+	utils.Logger.WithField("amend", amend).
 		WithField("message", message).
 		WithField("cmd", "git commit [--amend] -F /tmp/message").
 		Traceln("commit files")

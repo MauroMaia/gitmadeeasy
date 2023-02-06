@@ -8,9 +8,7 @@ import (
 // TODO - fill the docs
 func Fetch() ([]string, error) {
 
-	utils.Logger.
-		WithField("func", "Fetch").
-		WithField("cmd", "git fetch --all").
+	utils.Logger.WithField("cmd", "git fetch --all").
 		Traceln("Get changes from remote repositories")
 
 	result, exitCode, err := utils.ExecuteShellCmd("git", "fetch", "--all")

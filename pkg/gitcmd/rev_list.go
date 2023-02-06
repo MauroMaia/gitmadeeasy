@@ -17,7 +17,6 @@ func GetNrOfCommitsAhead() (string, error) {
 	currentBranch = "origin/" + currentBranch
 
 	utils.Logger.WithField("currentBranch", currentBranch).
-		WithField("func", "GetNrOfCommitsBehind").
 		WithField("cmd", `git rev-list ${currentBranch}..HEAD --count`).
 		Traceln("Adding git file")
 
@@ -42,7 +41,6 @@ func GetNrOfCommitsBehind() (string, error) {
 	currentBranch = "origin/" + currentBranch
 
 	utils.Logger.WithField("currentBranch", currentBranch).
-		WithField("func", "GetNrOfCommitsBehind").
 		WithField("cmd", `git rev-list HEAD..${currentBranch} --count`).
 		Traceln("Adding git file")
 

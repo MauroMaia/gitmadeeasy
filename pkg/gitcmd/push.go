@@ -14,7 +14,6 @@ func Push(force bool) ([]string, error) {
 
 	utils.Logger.
 		WithField("force", force).
-		WithField("func", "Push").
 		WithField("cmd", "git push [-f]").
 		Traceln("Get changes from remote repositories")
 

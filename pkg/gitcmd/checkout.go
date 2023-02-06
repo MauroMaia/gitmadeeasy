@@ -8,8 +8,7 @@ import (
 // TODO - fill the docs
 func CreateNewBranch(branchName string, push bool) error {
 
-	utils.Logger.WithField("func", "CreateNewBranch").
-		WithField("branchName", branchName).
+	utils.Logger.WithField("branchName", branchName).
 		WithField("push", push).
 		WithField("cmd", "git checkout -b").
 		Traceln("Create local branch")
@@ -23,8 +22,7 @@ func CreateNewBranch(branchName string, push bool) error {
 	}
 
 	if push {
-		utils.Logger.WithField("func", "CreateNewBranch").
-			WithField("branchName", branchName).
+		utils.Logger.WithField("branchName", branchName).
 			WithField("push", push).
 			WithField("cmd", "git push --set-upstream origin").
 			Traceln("push local branch to remote (hardcoded origin)")

@@ -11,7 +11,6 @@ import (
 func StageFile(filename string) ([]string, error) {
 
 	utils.Logger.WithField("filename", filename).
-		WithField("func", "StageFile").
 		WithField("cmd", "git add").
 		Traceln("Adding git file")
 
