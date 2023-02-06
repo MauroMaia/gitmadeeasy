@@ -14,8 +14,7 @@ var findRemotesRegex, _ = regexp.Compile("^remotes/(.*)/(.*)(.*)")
 // TODO - fill the docs
 func ListBranches() ([]model.Branch, error) {
 
-	utils.Logger.WithField("cmd", "git branch --no-color --list --all").
-		Traceln("Listing branch's")
+	utils.Logger.Traceln("Listing branch's")
 
 	output, exitCode, err := utils.ExecuteShellCmd("git", "branch", "--no-color", "--list", "--all")
 
@@ -65,8 +64,7 @@ func ListBranches() ([]model.Branch, error) {
 // TODO - fill the docs
 func GetCurrentBranchName() (string, error) {
 
-	utils.Logger.WithField("cmd", "git fetch --all").
-		Traceln("Get changes from remote repositories")
+	utils.Logger.Traceln("Get changes from remote repositories")
 
 	result, exitCode, err := utils.ExecuteShellCmd("git", "branch", "--show-current")
 

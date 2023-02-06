@@ -11,7 +11,6 @@ import (
 func StageFile(filename string) ([]string, error) {
 
 	utils.Logger.WithField("filename", filename).
-		WithField("cmd", "git add").
 		Traceln("Adding git file")
 
 	// check if filename still exists

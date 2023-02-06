@@ -11,8 +11,7 @@ var findBranchStatus, _ = regexp.Compile(".*\\[(.+)].*")
 // TODO - fill the docs
 func ListFilesChanged() ([]string, error) {
 
-	utils.Logger.WithField("cmd", "git status -s").
-		Traceln("Get list of files changed")
+	utils.Logger.Traceln("Get list of files changed")
 
 	result, exitCode, err := utils.ExecuteShellCmd("git", "status", "-s")
 

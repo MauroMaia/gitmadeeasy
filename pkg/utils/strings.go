@@ -28,6 +28,10 @@ func TextToOrange(in string) string {
 	return fmt.Sprintf("\x1b[38;5;%dm%s\x1b[0m ", 172, in)
 }
 
+func TextToBlueWater(in string) string {
+	return fmt.Sprintf("\x1b[38;5;%dm%s\x1b[0m ", 45, in)
+}
+
 func TextToBlue(in string) string {
 	return fmt.Sprintf("\x1b[38;5;%dm%s\x1b[0m ", 21, in)
 }

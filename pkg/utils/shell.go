@@ -10,7 +10,7 @@ import (
 func ExecuteShellCmd(command string, args ...string) ([]string, int, error) {
 	// TODO validate input
 
-	Logger.WithField("cmd", command).
+	Logger.WithField("cmd", command+strings.Join(append([]string{" "}, args...), " ")).
 		WithField("args", args).
 		Traceln("Executing shell command")
 
