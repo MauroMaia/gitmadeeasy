@@ -1,13 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="go build github.com/MauroMaia/gitmadeeasy" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
-    <log_file alias="log" path="/private/tmp/log.txt" />
+  <configuration default="false" name="gitmadeeasy" type="GoApplicationRunConfiguration" factoryName="Go Application">
     <module name="gitmadeeasy" />
     <working_directory value="$PROJECT_DIR$" />
     <kind value="PACKAGE" />
     <package value="github.com/MauroMaia/gitmadeeasy" />
     <directory value="$PROJECT_DIR$" />
     <filePath value="$PROJECT_DIR$" />
-    <output_directory value="/tmp" />
     <method v="2" />
   </configuration>
 </component>

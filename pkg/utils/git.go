@@ -1,11 +1,35 @@
 package utils
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+)
 
 func IsGitRepoDirectory() bool {
-	// FIXME - must check recursively
-	if stat, err := os.Stat(".git"); !os.IsNotExist(err) {
-		return stat.IsDir()
+	leaf, _ := os.Getwd()
+
+	// Traverse from leaf to root
+	for {
+		// Print the current directory
+		// fmt.Println(leaf)
+
+		// check if there is a .git directory in this leaf
+		if stat, err := os.Stat(leaf + "/.git"); !os.IsNotExist(err) {
+			if stat.IsDir() == true {
+				return true
+			}
+		}
+
+		// Get the parent directory
+		parent := filepath.Dir(leaf)
+
+		// Stop if the parent directory is the same as the current directory
+		if parent == leaf {
+			break
+		}
+
+		// Update the leaf directory
+		leaf = parent
 	}
 	return false
 }
