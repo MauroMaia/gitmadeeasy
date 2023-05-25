@@ -35,9 +35,12 @@ func Keybindings(g *gocui.Gui) error {
 	}
 
 	//
-	//	DIFF_VIEW
+	//	COMMIT_POPUP
 	//
-	if err := g.SetKeybinding(constants.COMMIT_POPUP, gocui.KeyCtrlS, gocui.ModNone, quitPopup); err != nil {
+	if err := g.SetKeybinding(constants.COMMIT_POPUP, gocui.KeyCtrlS, gocui.ModNone, commit); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding(constants.COMMIT_POPUP, gocui.KeyCtrlSpace, gocui.ModNone, quitPopup); err != nil {
 		return err
 	}
 	return nil

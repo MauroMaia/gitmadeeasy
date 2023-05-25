@@ -35,7 +35,7 @@ func OpenPopup(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func quitPopup(g *gocui.Gui, v *gocui.View) error {
+func commit(g *gocui.Gui, v *gocui.View) error {
 
 	content := v.ViewBuffer()
 	utils.Logger.WithField("commitMessage", content)
@@ -50,6 +50,11 @@ func quitPopup(g *gocui.Gui, v *gocui.View) error {
 	}
 
 	go LoadCommits()
+
+	return quitPopup(g, v)
+}
+
+func quitPopup(g *gocui.Gui, v *gocui.View) error {
 
 	g.DeleteView(constants.COMMIT_POPUP)
 	constants.LEFT_VIEW = constants.COMMIT_LIST_VIEW
