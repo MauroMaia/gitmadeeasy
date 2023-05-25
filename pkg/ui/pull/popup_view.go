@@ -26,9 +26,15 @@ func init() {
 		"save/apply local changes after pulling",
 		false,
 	)
+	rebase := ui.NewOptionsElement[bool](
+		"Rebase",
+		"apply remote changes before local commits",
+		false,
+	)
 	options = []interface{}{
 		stash,
 		prune,
+		rebase,
 	}
 }
 
@@ -40,7 +46,7 @@ func DisplayPopUp(g *gocui.Gui) error {
 	p = ui.NewOptionsPanel(constants.PUll_POPUP,
 		"PULL",
 		maxX/2-25,
-		maxY/2-2,
+		maxY/2-len(options),
 		50,
 		&options,
 	)
@@ -69,7 +75,7 @@ func onEnterPress(g *gocui.Gui, v *gocui.View) error {
 	fmt.Fprint(v, " 50%")
 
 	go func() {
-		_, err := gitcmd.Push(true)
+		_, err := gitcmd.Pull(options[1].(ui.OptionsElement[bool]).Val, options[2].(ui.OptionsElement[bool]).Val, false)
 
 		g.Update(func(g *gocui.Gui) error {
 			if err != nil {
@@ -116,6 +122,11 @@ func onEnterSpace(g *gocui.Gui, v *gocui.View) error {
 			optionConv.Val = !optionConv.Val
 			options[1] = optionConv
 			break
+		case "Rebase":
+			optionConv := options[2].(ui.OptionsElement[bool])
+			optionConv.Val = !optionConv.Val
+			options[2] = optionConv
+			break
 		}
 	}
 
@@ -130,7 +141,7 @@ func onEnterSpace(g *gocui.Gui, v *gocui.View) error {
 func cursorDown(g *gocui.Gui, v *gocui.View) error {
 	if v != nil {
 		cx, cy := v.Cursor()
-		if cy+2 >= 4 { // FIXME - remove this magical number
+		if cy+2 >= len(options)*2 { // FIXME - remove this magical number
 			// reatch the bottom of the list
 			return nil
 		}

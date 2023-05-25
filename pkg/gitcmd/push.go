@@ -14,7 +14,7 @@ func Push(force bool) ([]string, error) {
 
 	utils.Logger.
 		WithField("force", force).
-		Traceln("Get changes from remote repositories")
+		Traceln("Send changes to remote repositories")
 
 	if force {
 		result, exitCode, err = utils.ExecuteShellCmd("git", "push", "-f")
