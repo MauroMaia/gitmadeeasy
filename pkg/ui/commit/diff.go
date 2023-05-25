@@ -27,7 +27,7 @@ func LayoutDiff(g *gocui.Gui, xBegins int, yBegins int, xEnd int) *gocui.View {
 
 	_, maxY := g.Size()
 
-	v, err := g.SetView(constants.DIFF_VIEW, xBegins, yBegins, xEnd, maxY-3)
+	v, err := g.SetView(constants.DIFF_VIEW, xBegins, yBegins, xEnd, maxY-2)
 	if err != nil && err != gocui.ErrUnknownView {
 		utils.Logger.Fatalln(err)
 	}

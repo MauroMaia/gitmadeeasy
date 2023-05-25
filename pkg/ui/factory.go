@@ -20,22 +20,22 @@ func DrawRightView(g *gocui.Gui, xBegins int, painelXsize int, viewName string) 
 	factory(g, xBegins+1, xEnd, 0, viewName)
 }
 
-func factory(g *gocui.Gui, xBegins int, xEnd int, yEnd int, viewName string) {
+func factory(g *gocui.Gui, xBegin int, xEnd int, yBegin int, viewName string) {
 	switch viewName {
 	case constants.FILE_CHANGED_VIEW:
-		status.LayoutShowStatus(g, xBegins, yEnd, xEnd)
+		status.LayoutShowStatus(g, xBegin, yBegin, xEnd)
 		break
 	case constants.BRANCH_LIST_VIEW:
-		branch.LayoutListBranches(g, xBegins, yEnd, xEnd)
+		branch.LayoutListBranches(g, xBegin, yBegin, xEnd)
 		break
 	case constants.COMMIT_LIST_VIEW:
-		commit.LayoutListCommits(g, xBegins, yEnd, xEnd)
+		commit.LayoutListCommits(g, xBegin, yBegin, xEnd)
 		break
 	case constants.DIFF_VIEW:
-		commit.LayoutDiff(g, xBegins, yEnd, xEnd)
+		commit.LayoutDiff(g, xBegin, yBegin, xEnd)
 		break
 	case constants.LOG_VIEW:
-		log.Layout(g, xBegins, yEnd, xEnd)
+		log.Layout(g, xBegin, yBegin, xEnd)
 		break
 	default:
 		utils.Logger.Warnf("This view has no process to be created on the left panel %s", viewName)
